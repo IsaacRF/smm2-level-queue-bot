@@ -1,0 +1,219 @@
+﻿{
+  "output_file": "settings.json",
+    "OnlyLive": {
+    "type": "checkbox",
+    "value": false,
+  	"label": "Only when live",
+    "tooltip": "Command is only active when stream is live",
+  	"group": "General"
+  },
+    "command_add": {
+    "type": "textbox",
+    "value": "!add",
+  	"label": "Command Name (Add level)",
+    "tooltip": "The command the bot will respond to",
+  	"group": "General"
+  },
+    "command_list": {
+    "type": "textbox",
+    "value": "!list",
+  	"label": "Command Name (Levels list)",
+    "tooltip": "The command the bot will respond to",
+  	"group": "General"
+  },
+    "command_position": {
+    "type": "textbox",
+    "value": "!position",
+  	"label": "Command Name (Position on list)",
+    "tooltip": "The command the bot will respond to",
+  	"group": "General"
+  },
+    "command_current_level": {
+    "type": "textbox",
+    "value": "!level",
+  	"label": "Command Name (Current level)",
+    "tooltip": "The command the bot will respond to",
+  	"group": "General"
+  },
+    "command_next_level": {
+    "type": "textbox",
+    "value": "!nextlevel",
+  	"label": "Command Name (Next level)",
+    "tooltip": "The command the bot will respond to",
+  	"group": "General"
+  },
+    "command_win_level": {
+    "type": "textbox",
+    "value": "!winlevel",
+  	"label": "Command Name (Win level)",
+    "tooltip": "The command the bot will respond to",
+  	"group": "General"
+  },
+    "command_skip_level": {
+    "type": "textbox",
+    "value": "!skiplevel",
+  	"label": "Command Name (Skip level)",
+    "tooltip": "The command the bot will respond to",
+  	"group": "General"
+  },
+    "is_queue_limited": {
+    "type": "checkbox",
+    "value": false,
+    "label": "Enable queue limit",
+    "tooltip": "Use max levels parameter to limit max levels queued",
+    "group": "General"
+  },
+    "queue_length": {
+    "type": "numberbox",
+    "value": "25",
+    "label": "Max levels on queue",
+    "tooltip": "Max levels number that can exist in queue",
+    "group": "General"
+  },
+    "is_user_limited": {
+    "type": "checkbox",
+    "value": false,
+    "label": "Enable user limit",
+    "tooltip": "Use max levels by user parameter to limit user",
+    "group": "General"
+  },
+    "max_levels_by_user": {
+    "type": "numberbox",
+    "value": "3",
+    "label": "Max levels by user",
+    "tooltip": "Max levels number that can exist in queue",
+    "group": "General"
+  },
+    "PermissionBase": {
+    "type": "dropdown",
+    "value": "Everyone",
+    "items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","User_Specific","Min_Rank","Min_Points","Min_Hours","Moderator","Editor","Caster"],
+    "label": "Permission level (Basic commands)",
+    "tooltip": "Set the permission level for add, list, currentlevel, nextlevel, etc.",
+    "group": "General"
+  },
+    "PermissionInfoBase": {
+    "type": "textbox",
+    "value": "",
+    "label": "Permission level info (Basic commands)",
+    "tooltip": "Set the user, rank or tier for base permission",
+    "group": "General"
+  },
+    "PermissionAdvanced": {
+    "type": "dropdown",
+    "value": "Moderator",
+    "items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","User_Specific","Min_Rank","Min_Points","Min_Hours","Moderator","Editor","Caster"],
+    "label": "Permission level (Adv. commands)",
+    "tooltip": "Set the permission level for win or skip commands",
+    "group": "General"
+  },
+    "PermissionInfoAdvanced": {
+    "type": "textbox",
+    "value": "",
+    "label": "Permission level info (Adv. commands)",
+    "tooltip": "Set the user, rank or tier for advanced permission",
+    "group": "General"
+  },
+    "Usage": {
+    "type": "dropdown",
+    "value": "Stream Chat",
+    "items": ["Stream Chat","Stream Whisper","Stream Both","Discord Chat","Discord Whisper","Discord Both","Chat Both","Whisper Both","All"],
+    "label": "Usage",
+    "tooltip": "Usage for where the script can be used!",
+    "group": "General"
+  },
+    "UseCD": {
+    "type": "checkbox",
+    "value": false,
+  	"label": "Use Cooldown Messages",
+    "tooltip": "Enable/Disable cooldown messages",
+  	"group": "Cooldown"
+  },
+    "Cooldown": {
+    "type": "numberbox",
+  	"label": "Cooldown (seconds)",
+    "value": 0,
+    "tooltip": "Cooldown in seconds.",
+  	"group": "Cooldown"
+  },
+    "OnCooldown": {
+    "type": "textbox",
+    "value": "{0} the command is still on cooldown for {1} seconds!",
+  	"label": "Cooldown Response",
+    "tooltip": "The message that the bot will display when the command is on cooldown. \r\n {0} = user \r\n {1} = time remaining",
+  	"group": "Cooldown"
+  },
+    "UserCooldown": {
+    "type": "numberbox",
+  	"label": "User Cooldown (seconds)",
+    "value": 10,
+    "tooltip": "User cooldown in seconds.",
+  	"group": "Cooldown"
+  },
+    "OnUserCooldown": {
+    "type": "textbox",
+    "value": "{0} the command is still on user cooldown for {1} seconds!",
+  	"label": "User Cooldown Response",
+    "tooltip": "The message that the bot will display when the command is on user cooldown. \r\n {0} = user \r\n {1} = time remaining",
+  	"group": "Cooldown"
+  },
+  "CasterCD": {
+    "type": "checkbox",
+    "value": true,
+  	"label": "Caster ignores cooldown",
+    "tooltip": "Enable/Disable cooldown for caster",
+  	"group": "Cooldown"
+  },
+    "NotEnoughResponse": {
+    "type": "textbox",
+    "value": "{0} you don't have that many {1} to gamble ",
+    "label": "Not enough currency response",
+    "tooltip": "Message sent when user try to gamble more than they have \r\n {0} = user \r\n {1} = Currency name \r\n {2} = command name",
+    "group": "Responses"
+  },
+    "InfoResponse": {
+    "type": "textbox",
+    "value": "!add <código> para añadir un nivel a la lista. !currentlevel, !nextlevel o !list para info",
+    "label": "Info response",
+    "tooltip": "Message sent when user doesn't manage to gamble correctly",
+    "group": "Responses"
+  },
+  "PermissionRespBase": {
+    "type": "textbox",
+    "value": "$user -> Sólo $permissionbase ($permissioninfobase) o superior pueden usar este comando",
+    "label": "Base Permissions denied response",
+    "tooltip": "Message sent when user doesn't select any valid wire. \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
+    "group": "Responses"
+  },
+  "PermissionRespAdvanced": {
+    "type": "textbox",
+    "value": "$user -> Sólo $permissionadvanced ($permissioninfoadvanced) o superior pueden usar este comando",
+    "label": "Advanced Permissions denied response",
+    "tooltip": "Message sent when user doesn't select any valid wire. \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
+    "group": "Responses"
+  },
+  "ControlC": {
+    "type": "button",
+    "label": "PLACEHOLDER",
+    "tooltip": "Copy the filepath for index.html directly to clipboard for easy insertion in your streaming software",
+    "function": "ControlC",
+    "wsevent": "",
+    "group": ""
+  },
+    "BtnDefaults": {
+    "type": "button",
+    "label": "Restore Default Settings",
+    "tooltip": "Reset settings back to defaults.\r\nReload Scripts afterwards to see the changes in the user interface!",
+    "function": "SetDefaults",
+    "wsevent": "",
+    "group": ""
+	},
+    "openReadMe": {
+    "type": "button",
+    "label": "Open README.txt",
+    "tooltip": "Opens the README.txt for this script",
+    "function": "OpenReadMe",
+    "wsevent": "",
+    "group": ""
+  }
+}
