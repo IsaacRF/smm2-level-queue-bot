@@ -35,8 +35,13 @@ if( window.WebSocket ){
             if(jsonObject.event == "EVENT_SMM2QS_LEVEL_UPDATE")
             {
                 //SAMPLE
-                //var MySet = JSON.parse(jsonObject.data);
-                //document.getElementById("myimg").src=MySet.link;
+                var data = JSON.parse(jsonObject.data);
+                $("#current-level .userName").text(data.currentLevelUser);
+                $("#current-level .levelCode").text(data.currentLevelCode);
+                $("#next-level .userName").text(data.nextLevelUser);
+                $("#next-level .levelCode").text(data.nextLevelCode);
+                $("#wins").text(data.wins);
+                $("#skips").text(data.skips);
             }
         }
 
