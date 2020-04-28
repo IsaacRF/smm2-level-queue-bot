@@ -4,6 +4,7 @@ if( window.WebSocket ){
     //---------------------------------
     socket = null;
     var reconnectIntervalMs = 10000;
+    var apiAvatarEndPoint = "https://decapi.me/twitch/avatar/"
 
     function Connect() {
         socket = new WebSocket(API_Socket);
@@ -34,7 +35,7 @@ if( window.WebSocket ){
 
             if(jsonObject.event == "EVENT_SMM2QS_LEVEL_UPDATE")
             {
-                //SAMPLE
+                //UI Update
                 var data = JSON.parse(jsonObject.data);
                 $("#current-level .userName").text(data.currentLevelUser);
                 $("#current-level .levelCode").text(data.currentLevelCode);
@@ -42,6 +43,18 @@ if( window.WebSocket ){
                 $("#next-level .levelCode").text(data.nextLevelCode);
                 $("#wins").text(data.wins);
                 $("#skips").text(data.skips);
+
+                if (data.currentLevelUser != "") {
+                    $.get(apiAvatarEndPoint + data.currentLevelUser, function(response) {
+                        $( "#current-level .userAvatar" ).attr('src', response);
+                    });
+                }
+
+                if (data.nextLevelUser != "") {
+                    $.get(apiAvatarEndPoint + data.nextLevelUser, function(response) {
+                        $( "#next-level .userAvatar" ).attr('src', response);
+                    });
+                }
             }
         }
 
