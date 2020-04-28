@@ -29,7 +29,6 @@ Description = "Super Mario Maker 2 level queue system"
 #TODO: (!) Move all messages to variables
 #TODO: Make cooldowns work
 #TODO: Allow to open and close the queue
-#TODO: Make an overlay to represent info
 #TODO: Do something with the levels cut from levels file on win or skip
 
 # ---------------------------------------
@@ -95,6 +94,10 @@ class Settings:
             self.InfoResponse = "!add <código> para añadir un nivel a la lista. !currentlevel, !nextlevel o !list para info"
             self.PermissionRespBase= "$user -> Sólo $permissionbase ($permissioninfobase) o superior pueden usar este comando"
             self.PermissionRespAdvanced= "$user -> Sólo $permissionadvanced ($permissioninfoadvanced) o superior pueden usar este comando"
+
+        #Create levels file if it doesn't exist on initialization
+        if not os.path.exists(levelsFile):
+            open(levelsFile, 'w').close()
 
     # Reload settings on save through UI
     def Reload(self, data):
