@@ -11,49 +11,56 @@
     "type": "textbox",
     "value": "!add",
   	"label": "Command Name (Add level)",
-    "tooltip": "The command the bot will respond to",
+    "tooltip": "Command to add a level to queue",
   	"group": "General"
   },
     "command_list": {
     "type": "textbox",
     "value": "!list",
   	"label": "Command Name (Levels list)",
-    "tooltip": "The command the bot will respond to",
+    "tooltip": "Command to list all levels in queue",
   	"group": "General"
   },
     "command_position": {
     "type": "textbox",
     "value": "!position",
   	"label": "Command Name (Position on list)",
-    "tooltip": "The command the bot will respond to",
+    "tooltip": "Command to show all the queue positions the user has levels in",
   	"group": "General"
   },
     "command_current_level": {
     "type": "textbox",
     "value": "!level",
   	"label": "Command Name (Current level)",
-    "tooltip": "The command the bot will respond to",
+    "tooltip": "Command to show current level being played, if any",
   	"group": "General"
   },
     "command_next_level": {
     "type": "textbox",
     "value": "!nextlevel",
   	"label": "Command Name (Next level)",
-    "tooltip": "The command the bot will respond to",
+    "tooltip": "Command to show next level in queue, if any",
   	"group": "General"
   },
     "command_win_level": {
     "type": "textbox",
     "value": "!winlevel",
   	"label": "Command Name (Win level)",
-    "tooltip": "The command the bot will respond to",
+    "tooltip": "Command to jump to next level adding a win to the counter",
   	"group": "General"
   },
     "command_skip_level": {
     "type": "textbox",
     "value": "!skiplevel",
   	"label": "Command Name (Skip level)",
-    "tooltip": "The command the bot will respond to",
+    "tooltip": "Command to jump to next level adding a skip to counter",
+  	"group": "General"
+  },
+    "command_refresh_overlay": {
+    "type": "textbox",
+    "value": "!refreshlevels",
+  	"label": "Command Name (Refresh Overlay)",
+    "tooltip": "Command to force overlay refresh",
   	"group": "General"
   },
     "is_queue_limited": {

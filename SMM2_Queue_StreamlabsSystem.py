@@ -19,7 +19,7 @@ import ctypes
 ScriptName = "SMM2 Queue"
 Website = "https://twitch.tv/clickandslash"
 Creator = "IsaacRF239 from Click and Slash"
-Version = "1.0.0"
+Version = "1.1.0"
 Description = "Super Mario Maker 2 level queue system"
 
 # ---------------------------------------
@@ -37,6 +37,7 @@ Description = "Super Mario Maker 2 level queue system"
 # ---------------------------------------
 """ Major and recent Releases (open README.txt for full release notes)
 1.0.0 - Initial Release
+1.1.0 - Adds a levels overlay
 """
 
 # ---------------------------------------
@@ -49,6 +50,7 @@ MB_YES = 6
 eventLevelUpdate = "EVENT_SMM2QS_LEVEL_UPDATE"
 levelCodePattern = re.compile("([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})$")
 twitchLineBreak = "__________________________________________________________"
+twitchLineHeader = " ------------------------------------ Cola de niveles --------------------------------------"
 wins = 0
 skips = 0
 
@@ -73,6 +75,7 @@ class Settings:
             self.command_next_level = "!nextlevel"
             self.command_win_level = "!winlevel"
             self.command_skip_level = "!skiplevel"
+            self.command_refresh_overlay = "!refreshlevels"
             self.is_queue_limited = False
             self.queue_length = 25
             self.is_user_limited = False
@@ -287,7 +290,8 @@ def HasPermission(data):
             SendResp(data, MySet.Usage, message)
             return False
     elif (data.GetParam(0).lower() == MySet.command_win_level.lower() or
-    data.GetParam(0).lower() == MySet.command_skip_level.lower()):
+    data.GetParam(0).lower() == MySet.command_skip_level.lower() or
+    data.GetParam(0).lower() == MySet.command_refresh_overlay.lower()):
         if not Parent.HasPermission(data.User, MySet.PermissionAdvanced, MySet.PermissionInfoAdvanced):
             message = MySet.PermissionRespAdvanced.format(data.UserName, MySet.PermissionAdvanced, MySet.PermissionInfoAdvanced)
             SendResp(data, MySet.Usage, message)
@@ -327,7 +331,7 @@ def ListLevels(data):
         SendResp(data, MySet.Usage, "No hay niveles en cola, añade el tuyo con " + MySet.command_add)
         return
 
-    header = twitchLineBreak + " ------------------------------------ Cola de niveles --------------------------------------"
+    header = twitchLineBreak + twitchLineHeader
     body = ""
     lineNumber = 1
 
@@ -407,7 +411,7 @@ def NextLevel(data):
         with open(levelsFile, 'r') as f:
             levels = f.readlines()
             if len(levels) >= 2:
-                level = levels[1].strip();
+                level = levels[1].strip()
                 if level != "":
                     SendResp(data, MySet.Usage, level)
                 else:
@@ -460,6 +464,34 @@ def FinishLevel(data, result):
             Parent.BroadcastWsEvent(eventLevelUpdate, json.dumps(overlayInfo.__dict__))
     except:
         SendResp(data, MySet.Usage, "Error al intentar modificar la lista de niveles, dale un golpe al bot")
+
+def RefreshOverlay(data):
+    global wins
+    global skips
+
+    if CountLevels() <= 0:
+        SendResp(data, MySet.Usage, "No hay niveles en cola actualmente. Se pueden añadir usando !add")
+    else:
+        try:
+            with open(levelsFile, 'r') as f:
+                levels = f.readlines()
+
+            if len(levels) > 0:
+                currentLevel = levels[0].strip()
+            else:
+                currentLevel = ""
+
+            if len(levels) > 1:
+                nextLevel = levels[1].strip()
+            else:
+                nextLevel = ""
+
+            overlayInfo = OverlayInfo(currentLevel, nextLevel, wins, skips)
+            Parent.BroadcastWsEvent(eventLevelUpdate, json.dumps(overlayInfo.__dict__))
+
+            SendResp(data, MySet.Usage, "Here we go! Overlay de niveles actualizado")
+        except:
+            SendResp(data, MySet.Usage, "Ha ocurrido un error al actualizar el overlay. Dale un toque al staff")
 
 # ---------------------------------------
 # [Required] functions
@@ -515,6 +547,9 @@ def Execute(data):
             return
         elif data.GetParam(0).lower() == MySet.command_skip_level.lower():
             FinishLevel(data, 1)
+            return
+        elif data.GetParam(0).lower() == MySet.command_refresh_overlay.lower():
+            RefreshOverlay(data)
             return
 
 

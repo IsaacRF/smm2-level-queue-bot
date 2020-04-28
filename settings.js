@@ -27,5 +27,6 @@
   "is_user_limited": true,
   "max_levels_by_user": 3,
   "PermissionRespBase": "$user -> Sólo $permissionbase ($permissioninfobase) o superior pueden usar este comando",
-  "PermissionRespAdvanced": "$user -> Sólo $permissionadvanced ($permissioninfoadvanced) o superior pueden usar este comando"
+  "PermissionRespAdvanced": "$user -> Sólo $permissionadvanced ($permissioninfoadvanced) o superior pueden usar este comando",
+  "command_refresh_overlay": "!refreshlevels"
 };
