@@ -17,7 +17,7 @@ import ctypes
 # [Required] Script information
 # ---------------------------------------
 ScriptName = "SMM2 Queue"
-Website = "https://www.twitch.tv/clickandslash"
+Website = "https://twitch.tv/clickandslash"
 Creator = "IsaacRF239 from Click and Slash"
 Version = "1.0.0"
 Description = "Super Mario Maker 2 level queue system"
@@ -25,6 +25,8 @@ Description = "Super Mario Maker 2 level queue system"
 # ---------------------------------------
 # TODO List
 # ---------------------------------------
+#TODO: (!) Update Readme.md
+#TODO: (!) Move all messages to variables
 #TODO: Make cooldowns work
 #TODO: Allow to open and close the queue
 #TODO: Make an overlay to represent info
@@ -44,8 +46,11 @@ settingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 levelsFile = os.path.join(os.path.dirname(__file__), "levels.txt")
 MessageBox = ctypes.windll.user32.MessageBoxW
 MB_YES = 6
+eventLevelUpdate = "EVENT_SMM2QS_LEVEL_UPDATE"
 levelCodePattern = re.compile("([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})$")
 twitchLineBreak = "__________________________________________________________"
+wins = 0
+skips = 0
 
 # ---------------------------------------
 # Classes
@@ -106,6 +111,35 @@ class Settings:
         except ValueError:
             Parent.Log(ScriptName, "Failed to save settings to file.")
         return
+
+class OverlayInfo:
+    def __init__(self, currentLevelInfo = "", nextLevelInfo = "", wins = 0, skips = 0):
+        for char in ['[', '@', '\n', ']'] :
+            currentLevelInfo = currentLevelInfo.replace(char, '')
+            nextLevelInfo = nextLevelInfo.replace(char, '')
+
+        if currentLevelInfo != "":
+            currentLevelInfoSplits = currentLevelInfo.split(" ")
+            currentLevelCode = currentLevelInfoSplits[0]
+            currentLevelUser = currentLevelInfoSplits[1]
+        else:
+            currentLevelCode = ""
+            currentLevelUser = ""
+
+        if nextLevelInfo != "":
+            nextLevelInfoSplits = nextLevelInfo.split(" ")
+            nextLevelCode = nextLevelInfoSplits[0]
+            nextLevelUser = nextLevelInfoSplits[1]
+        else:
+            nextLevelCode = ""
+            nextLevelUser = ""
+
+        self.currentLevelCode = currentLevelCode
+        self.currentLevelUser = currentLevelUser
+        self.nextLevelCode = nextLevelCode
+        self.nextLevelUser = nextLevelUser
+        self.wins = wins
+        self.skips = skips
 
 # ---------------------------------------
 # Settings functions
@@ -222,30 +256,21 @@ def AddCooldown(data):
 def IsOnCooldown(data):
     """Return true if command is on cooldown and send cooldown message if enabled"""
     cooldown = Parent.IsOnCooldown(ScriptName, MySet.Command)
-    userCooldown = Parent.IsOnUserCooldown(
-        ScriptName, MySet.Command, data.User)
+    userCooldown = Parent.IsOnUserCooldown(ScriptName, MySet.Command, data.User)
     caster = (Parent.HasPermission(data.User, "Caster", "") and MySet.CasterCD)
 
     if (cooldown or userCooldown) and caster is False:
-
         if MySet.UseCD:
-            cooldownDuration = Parent.GetCooldownDuration(
-                ScriptName, MySet.Command)
-            userCDD = Parent.GetUserCooldownDuration(
-                ScriptName, MySet.Command, data.User)
+            cooldownDuration = Parent.GetCooldownDuration(ScriptName, MySet.Command)
+            userCDD = Parent.GetUserCooldownDuration(ScriptName, MySet.Command, data.User)
 
             if cooldownDuration > userCDD:
                 m_CooldownRemaining = cooldownDuration
-
-                message = MySet.OnCooldown.format(
-                    data.UserName, m_CooldownRemaining)
+                message = MySet.OnCooldown.format(data.UserName, m_CooldownRemaining)
                 SendResp(data, MySet.Usage, message)
-
             else:
                 m_CooldownRemaining = userCDD
-
-                message = MySet.OnUserCooldown.format(
-                    data.UserName, m_CooldownRemaining)
+                message = MySet.OnUserCooldown.format(data.UserName, m_CooldownRemaining)
                 SendResp(data, MySet.Usage, message)
         return True
     return False
@@ -393,10 +418,15 @@ def NextLevel(data):
         SendResp(data, MySet.Usage, "Error al intentar leer la lista de niveles, avisa a un mod")
 
 def FinishLevel(data, result):
+    global wins
+    global skips
+
     if result == 0:
         message = "¡Nivel superado!"
+        wins = wins + 1
     else:
         message = "Nivel skipeado."
+        skips = skips + 1
 
     try:
         with open(levelsFile, 'r') as f: #open in read / write mode
@@ -410,13 +440,24 @@ def FinishLevel(data, result):
             f.writelines(levels)
 
             if len(levels) > 0:
-                nextLevel = levels[0].strip()
-                if nextLevel != "":
-                    SendResp(data, MySet.Usage, message + " El siguiente nivel es " + levels[0])
-                else:
-                    SendResp(data, MySet.Usage, message + " No hay más niveles en cola, añade el tuyo con " + MySet.command_add)
+                currentLevel = levels[0].strip()
+            else:
+                currentLevel = ""
+
+            if len(levels) > 1:
+                nextLevel = levels[1].strip()
+            else:
+                nextLevel = ""
+
+            #SEND BOT RESPONSE
+            if currentLevel != "":
+                SendResp(data, MySet.Usage, message + " El siguiente nivel es " + currentLevel)
             else:
                 SendResp(data, MySet.Usage, message + " No hay más niveles en cola, añade el tuyo con " + MySet.command_add)
+
+            #UPDATE OVERLAY INFO
+            overlayInfo = OverlayInfo(currentLevel, nextLevel, wins, skips)
+            Parent.BroadcastWsEvent(eventLevelUpdate, json.dumps(overlayInfo.__dict__))
     except:
         SendResp(data, MySet.Usage, "Error al intentar modificar la lista de niveles, dale un golpe al bot")
 
@@ -443,7 +484,6 @@ def Init():
 
 def Execute(data):
     """Required Execute data function"""
-
     if not IsFromValidSource(data, MySet.Usage):
         return
 
@@ -451,6 +491,9 @@ def Execute(data):
         return
 
     if data.IsChatMessage() and not MySet.OnlyLive or Parent.IsLive():
+        #if IsOnCooldown(data):
+        #    return
+
         if data.GetParam(0).lower() == MySet.command_add.lower():
             levelCode = data.Message.replace(data.GetParam(0),'').strip().replace(' ','-').upper();
             AddLevel(levelCode, data)

@@ -6,6 +6,8 @@ if( window.WebSocket ){
     var reconnectIntervalMs = 10000;
 
     function Connect() {
+        socket = new WebSocket(API_Socket);
+
         socket.onopen = function()
         {
             // Format your Authentication Information
