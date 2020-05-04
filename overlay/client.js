@@ -37,10 +37,28 @@ if( window.WebSocket ){
             {
                 //UI Update
                 var data = JSON.parse(jsonObject.data);
-                $("#current-level .userName").text(data.currentLevelUser);
-                $("#current-level .levelCode").text(data.currentLevelCode);
-                $("#next-level .userName").text(data.nextLevelUser);
-                $("#next-level .levelCode").text(data.nextLevelCode);
+                if (data.currentLevelCode != "") {
+                    $("#current-level .userName").text(data.currentLevelUser);
+                    $("#current-level .levelCode").text(data.currentLevelCode);
+                    $("#current-level").removeClass('empty');
+                } else {
+                    $("#current-level").addClass('empty');
+                }
+
+                if (data.nextLevelCode != "") {
+                    $("#next-level .userName").text(data.nextLevelUser);
+                    $("#next-level .levelCode").text(data.nextLevelCode);
+                    $("#next-level").removeClass('empty');
+                } else {
+                    $("#next-level").addClass('empty');
+                }
+
+                if (data.currentLevelCode != "" && data.nextLevelCode == "") {
+                    $("#container").addClass('empty');
+                } else {
+                    $("#container").removeClass('empty');
+                }
+
                 $("#wins").text(data.wins);
                 $("#skips").text(data.skips);
 
