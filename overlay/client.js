@@ -4,7 +4,7 @@ if( window.WebSocket ){
     //---------------------------------
     socket = null;
     var reconnectIntervalMs = 10000;
-    var apiAvatarEndPoint = "https://decapi.me/twitch/avatar/"
+    var apiAvatarEndPoint = "https://decapi.me/twitch/avatar/";
 
     function Connect() {
         socket = new WebSocket(API_Socket);
@@ -35,44 +35,7 @@ if( window.WebSocket ){
 
             if(jsonObject.event == "EVENT_SMM2QS_LEVEL_UPDATE")
             {
-                //UI Update
-                var data = JSON.parse(jsonObject.data);
-                if (data.currentLevelCode != "") {
-                    $("#current-level .userName").text(data.currentLevelUser);
-                    $("#current-level .levelCode").text(data.currentLevelCode);
-                    $("#current-level").removeClass('empty');
-                } else {
-                    $("#current-level").addClass('empty');
-                }
-
-                if (data.nextLevelCode != "") {
-                    $("#next-level .userName").text(data.nextLevelUser);
-                    $("#next-level .levelCode").text(data.nextLevelCode);
-                    $("#next-level").removeClass('empty');
-                } else {
-                    $("#next-level").addClass('empty');
-                }
-
-                if (data.currentLevelCode != "" && data.nextLevelCode == "") {
-                    $("#container").addClass('empty');
-                } else {
-                    $("#container").removeClass('empty');
-                }
-
-                $("#wins").text(data.wins);
-                $("#skips").text(data.skips);
-
-                if (data.currentLevelUser != "") {
-                    $.get(apiAvatarEndPoint + data.currentLevelUser, function(response) {
-                        $( "#current-level .userAvatar" ).attr('src', response);
-                    });
-                }
-
-                if (data.nextLevelUser != "") {
-                    $.get(apiAvatarEndPoint + data.nextLevelUser, function(response) {
-                        $( "#next-level .userAvatar" ).attr('src', response);
-                    });
-                }
+                updateUI(jsonObject.data);
             }
         }
 
@@ -84,5 +47,54 @@ if( window.WebSocket ){
         }
     }
 
-    Connect();
+    /**
+     * Updates UI according to data received
+     * @param {string} jsonData
+     */
+    function updateUI(jsonData) {
+        //UI Update
+        var data = JSON.parse(jsonData);
+        if (data.currentLevelCode != "") {
+            $("#current-level .userName").text(data.currentLevelUser);
+            $("#current-level .levelCode").text(data.currentLevelCode);
+            $("#current-level").removeClass('empty');
+        } else {
+            $("#current-level").addClass('empty');
+        }
+
+        if (data.nextLevelCode != "") {
+            $("#next-level .userName").text(data.nextLevelUser);
+            $("#next-level .levelCode").text(data.nextLevelCode);
+            $("#next-level").removeClass('empty');
+        } else {
+            $("#next-level").addClass('empty');
+        }
+
+        if (data.currentLevelCode != "" && data.nextLevelCode == "") {
+            $("#container").addClass('empty');
+        } else {
+            $("#container").removeClass('empty');
+        }
+
+        $("#wins").text(data.wins);
+        $("#skips").text(data.skips);
+
+        if (data.currentLevelUser != "") {
+            $.get(apiAvatarEndPoint + data.currentLevelUser, function(response) {
+                $( "#current-level .userAvatar" ).attr('src', response);
+            });
+        }
+
+        if (data.nextLevelUser != "") {
+            $.get(apiAvatarEndPoint + data.nextLevelUser, function(response) {
+                $( "#next-level .userAvatar" ).attr('src', response);
+            });
+        }
+    }
+
+    if (typeof testsEnabled === 'undefined' || testsEnabled == false) {
+        Connect();
+    } else {
+        console.log('Tests enabled, socket connection omitted. Remove tests.js import from index to enter prod mode')
+    }
 }
