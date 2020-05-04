@@ -37,22 +37,22 @@ if( window.WebSocket ){
             {
                 //UI Update
                 var data = JSON.parse(jsonObject.data);
-                $("#current-level .userName").text(data.currentLevelUser);
-                $("#current-level .levelCode").text(data.currentLevelCode);
-                $("#next-level .userName").text(data.nextLevelUser);
-                $("#next-level .levelCode").text(data.nextLevelCode);
+                $("#current-level .user-name").text(data.currentLevelUser);
+                $("#current-level .level-code").text(data.currentLevelCode);
+                $("#next-level .user-name").text(data.nextLevelUser);
+                $("#next-level .level-code").text(data.nextLevelCode);
                 $("#wins").text(data.wins);
                 $("#skips").text(data.skips);
 
                 if (data.currentLevelUser != "") {
                     $.get(apiAvatarEndPoint + data.currentLevelUser, function(response) {
-                        $( "#current-level .userAvatar" ).attr('src', response);
+                        $( "#current-level .user-avatar" ).attr('src', response);
                     });
                 }
 
                 if (data.nextLevelUser != "") {
                     $.get(apiAvatarEndPoint + data.nextLevelUser, function(response) {
-                        $( "#next-level .userAvatar" ).attr('src', response);
+                        $( "#next-level .user-avatar" ).attr('src', response);
                     });
                 }
             }

@@ -1,0 +1,236 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:400&display=swap");
+@font-face {
+  font-family: 'SMM2';
+  src: url("../fonts/super-mario-maker-2.ttf") format("truetype");
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'SMM2', sans-serif;
+  font-size: 10px;
+  background-color: transparent;
+}
+
+.main-wrapper {
+  display: flex;
+  width: 100%;
+  min-width: 500px;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.main-wrapper.test {
+  background-color: #666;
+}
+
+.main-wrapper .overlay-container {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.main-wrapper .overlay-container .game-bar {
+  flex: 1 1 auto;
+  z-index: 10;
+}
+
+.main-wrapper .overlay-container .game-bar, .main-wrapper .overlay-container .game-bar .main-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.main-wrapper .overlay-container .game-bar .deco-blocks {
+  flex: 0 0 6%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+}
+
+.main-wrapper .overlay-container .game-bar .deco-blocks .block {
+  display: block;
+  position: relative;
+  margin: 1.1vw 1.1vw 0 0;
+  background-color: rgba(247, 193, 14, 0.85);
+  border-radius: 0.75vw;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.5);
+}
+
+.main-wrapper .overlay-container .game-bar .deco-blocks .block::before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+  width: 100%;
+}
+
+.main-wrapper .overlay-container .game-bar .deco-blocks .block:first-child {
+  margin-left: auto;
+  width: 40%;
+}
+
+.main-wrapper .overlay-container .game-bar .deco-blocks .block:last-child {
+  width: auto;
+}
+
+.main-wrapper .overlay-container .game-bar .deco-blocks .block:last-child::after {
+  content: "?";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: .12em;
+  height: 100%;
+  line-height: 135%;
+  font-size: 3.75vw;
+  color: #FFF;
+  text-align: center;
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.5);
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar {
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding: 1.1vw;
+  background-color: rgba(247, 193, 14, 0.85);
+  border-radius: 0.75vw;
+  border-top-right-radius: 2.5vw;
+  border-bottom-right-radius: 2.5vw;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.5);
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels .level-info {
+  flex: 1 1 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: center;
+  padding: 1.5%;
+  border-radius: 0.75vw;
+  background-color: #F2F2F2;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+  transform: scale(0.87);
+  opacity: 0.8;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels .level-info#current-level {
+  background-color: rgba(242, 242, 242, 0.95);
+  transform: scale(1);
+  opacity: 1;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels .level-info .avatar {
+  flex: 0 0 18%;
+  overflow: hidden;
+  position: relative;
+  margin-right: 1.5vw;
+  border-radius: 50%;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels .level-info .avatar::before {
+  content: '';
+  display: block;
+  width: 100%;
+  padding-top: 100%;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels .level-info .avatar .user-avatar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels .level-info .info {
+  flex: 1 1 auto;
+  font-size: 2.6vw;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels .level-info .info .user-name {
+  margin-bottom: .35em;
+  color: #656565;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .levels .level-info .info .level-code {
+  font-size: 3vw;
+  letter-spacing: .1em;
+  color: #222;
+  white-space: nowrap;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .counters {
+  flex: 0 0 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 1.65vw;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .counters > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .counters > div img {
+  display: block;
+  flex: 0 0 auto;
+  width: 28%;
+  height: auto;
+}
+
+.main-wrapper .overlay-container .game-bar .main-bar .counters > div span {
+  margin-left: 0.65em;
+  font-size: 2.75vw;
+}
+
+.main-wrapper .overlay-container .prompt-container {
+  overflow: hidden;
+  width: calc(94% - 0.75vw - 2.5vw);
+  margin-left: auto;
+  margin-right: 2.5vw;
+}
+
+.main-wrapper .overlay-container .prompt-container .prompt {
+  overflow: hidden;
+  padding: 1vw;
+  background-color: rgba(255, 255, 255, 0.75);
+  -webkit-mask-image: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 5%, #FFF 95%, rgba(255, 255, 255, 0));
+  mask-image: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 5%, #FFF 95%, rgba(255, 255, 255, 0));
+  transform: translateY(-100%);
+}
+
+.main-wrapper .overlay-container .prompt-container .prompt .message {
+  font-size: 2vw;
+  font-family: 'Roboto', sans-serif;
+}
+/*# sourceMappingURL=styles.css.map */

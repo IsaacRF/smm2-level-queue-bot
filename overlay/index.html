@@ -4,19 +4,63 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="../API_KEY.js"></script>
         <script src="client.js"></script>
-	</head>
+        <link rel="stylesheet" href="styles/styles.css">
+    </head>
+
 	<body>
-        <div id="current-level" class="levelInfo">
-            <img class="userAvatar" src="https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png">
-            <span class="userName">ClickAndSlash</span>
-            <span class="levelCode">AAA-BBB-CCC</span>
+
+        <div class="main-wrapper">
+            <div class="overlay-container">
+
+                <div class="game-bar">
+                    <div class="deco-blocks">
+                        <div class="block"></div>
+                        <div class="block"></div>
+                    </div>
+
+                    <div class="main-bar">
+                        <div class="levels">
+                            <div id="current-level" class="level-info">
+                                <div class="avatar">
+                                    <img class="user-avatar" src="https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png">
+                                </div>
+                                <div class="info">
+                                    <div class="user-name">ClickAndSlash</div>
+                                    <div class="level-code">AAA-BBB-CCC</div>
+                                </div>
+                            </div>
+                            <div id="next-level" class="level-info">
+                                <div class="avatar">
+                                    <img class="user-avatar" src="https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png">
+                                </div>
+                                <div class="info">
+                                    <div class="user-name">ClickAndSlash</div>
+                                    <div class="level-code">DDD-EEE-FFF</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="counters">
+                            <div class="wins-counter">
+                                <img src="images/wins.png">
+                                <span id="wins">0</span>
+                            </div>
+                            <div class="skips-counter">
+                                <img src="images/skips.png">
+                                <span id="skips">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prompt-container">
+                    <div class="prompt">
+                        <div class="message">Añade tu nivel utilizando el comando <strong>!add</strong> en el chat</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div id="next-level" class="levelInfo">
-            <img class="userAvatar" src="https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png">
-            <span class="userName">ClickAndSlash</span>
-            <span class="levelCode">DDD-EEE-FFF</span>
-        </div>
-        <div id="wins">0</div>
-        <div id="skips">0</div>
+
 	</body>
 </html>

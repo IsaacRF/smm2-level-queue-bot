@@ -1,0 +1,269 @@
+@charset 'utf-8';
+
+// --- Imports --- //
+
+@import '_common.scss';
+@import url('https://fonts.googleapis.com/css?family=Roboto:400&display=swap');
+@font-face {
+    font-family: 'SMM2';
+    src: url('../fonts/super-mario-maker-2.ttf') format('truetype');
+}
+
+// --- Variables --- //
+
+// Measures
+$baseSpacing: 1.1vw;
+$primaryBorderRadius: 0.75vw;
+$secondaryBorderRadius: 2.5vw;
+$decoBlocksWidth: 6%;
+// Colors
+$primaryColor: #F7C10E;
+$secondaryColor: #E70113;
+$cardColor: #F2F2F2;
+$backgroundColor: rgba($primaryColor, 0.85);
+// Others
+$shadow: 0px 0px 8px 0px rgba(#000, 0.5);
+
+
+// --- General styles --- //
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'SMM2', sans-serif;
+    font-size: 10px;
+    background-color: transparent;
+}
+
+
+// --- SMM2 overlay --- //
+
+.main-wrapper {
+    display: flex;
+    width: 100%;
+    min-width: 500px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    &.test {
+        //padding: 20px;
+        background-color: #666;
+    }
+
+    .overlay-container {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+        justify-content: stretch;
+        align-items: stretch;
+
+        .game-bar {
+            flex: 1 1 auto;
+            z-index: 10;
+
+            &, & .main-bar {
+                display: flex;
+                flex-direction: row;
+                justify-content: stretch;
+                align-items: stretch;
+            }
+
+            .deco-blocks {
+                flex: 0 0 $decoBlocksWidth;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: stretch;
+
+                .block {
+                    display: block;
+                    position: relative;
+                    margin: $baseSpacing $baseSpacing 0 0;
+                    background-color: $backgroundColor;
+                    border-radius: $primaryBorderRadius;
+                    box-shadow: $shadow;
+
+                    &::before {
+                        content: '';
+                        display: block;
+                        padding-top: 100%;
+                        width: 100%;
+                    }
+
+                    &:first-child {
+                        margin-left: auto;
+                        width: 40%;
+                    }
+
+                    &:last-child {
+                        width: auto;
+
+                        &::after {
+                            content: "?";
+                            display: block;
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            bottom: 0;
+                            left: .12em;
+                            height: 100%;
+                            line-height: 135%;
+                            font-size: 3.75vw;
+                            color: #FFF;
+                            text-align: center;
+                            text-shadow: 0px 0px 6px rgba(#000, 0.5);
+                        }
+                    }
+                }
+            }
+
+            .main-bar {
+                flex: 1 1 auto;
+                overflow: hidden;
+                padding: $baseSpacing;
+                background-color: $backgroundColor;
+                border-radius: $primaryBorderRadius;
+                border-top-right-radius: $secondaryBorderRadius;
+                border-bottom-right-radius: $secondaryBorderRadius;
+                box-shadow: $shadow;
+
+                .levels {
+                    flex: 1 1 auto;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: stretch;
+                    align-items: stretch;
+
+                    .level-info {
+                        flex: 1 1 1px;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: stretch;
+                        align-items: center;
+                        padding: 1.5%;
+                        border-radius: $primaryBorderRadius;
+                        background-color: $cardColor;
+                        box-shadow: 0px 0px 5px 0px rgba(#000, 0.15);
+                        transform: scale(0.87);
+                        opacity: 0.8;
+
+                        &#current-level {
+                            background-color: rgba($cardColor, 0.95);
+                            transform: scale(1);
+                            opacity: 1;
+                        }
+
+                        .avatar {
+                            flex: 0 0 18%;
+                            overflow: hidden;
+                            position: relative;
+                            margin-right: 1.5vw;
+                            border-radius: 50%;
+
+                            &::before {
+                                content: '';
+                                display: block;
+                                width: 100%;
+                                padding-top: 100%;
+                            }
+
+                            .user-avatar {
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                bottom: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+
+                        .info {
+                            flex: 1 1 auto;
+                            font-size: 2.6vw;
+
+                            .user-name {
+                                margin-bottom: .35em;
+                                color: #656565;
+                            }
+
+                            .level-code {
+                                font-size: 3vw;
+                                letter-spacing: .1em;
+                                color: #222;
+                                white-space: nowrap;
+                            }
+                        }
+                    }
+                }
+
+                .counters {
+                    flex: 0 0 15%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-right: $baseSpacing * 1.5;
+
+                    & > div {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+
+                        img {
+                            display: block;
+                            flex: 0 0 auto;
+                            width: 28%;
+                            height: auto;
+                        }
+
+                        span {
+                            margin-left: 0.65em;
+                            font-size: 2.75vw;
+                        }
+                    }
+                }
+            }
+        }
+
+        .prompt-container {
+            overflow: hidden;
+            width: calc(#{100% - $decoBlocksWidth} - #{$primaryBorderRadius} - #{$secondaryBorderRadius});
+            margin-left: auto;
+            margin-right: $secondaryBorderRadius;
+
+            .prompt {
+                overflow: hidden;
+                padding: 1vw;
+                background-color: rgba(#FFF, 0.75);
+                $mask: linear-gradient(
+                    to right,
+                    rgba(#FFF, 0),
+                    #FFF 5%,
+                    #FFF 95%,
+                    rgba(#FFF, 0)
+                );
+                -webkit-mask-image: $mask;
+                mask-image: $mask;
+                transform: translateY(-100%);
+
+                .message {
+                    font-size: 2vw;
+                    font-family: 'Roboto', sans-serif;
+                }
+            }
+        }
+    }
+}
