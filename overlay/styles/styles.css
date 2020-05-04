@@ -138,7 +138,7 @@ body {
 }
 
 .main-wrapper .overlay-container .game-bar .main-bar .levels .level-info#current-level {
-  background-color: rgba(242, 242, 242, 0.95);
+  background-color: #F2F2F2;
   transform: scale(1);
   opacity: 1;
 }
