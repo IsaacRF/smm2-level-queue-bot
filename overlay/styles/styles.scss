@@ -2,26 +2,12 @@
 
 // --- Imports --- //
 
+@import '_includes.scss';
 @import url('https://fonts.googleapis.com/css?family=Roboto:400&display=swap');
 @font-face {
     font-family: 'SMM2';
     src: url('../fonts/super-mario-maker-2.ttf') format('truetype');
 }
-
-// --- Variables --- //
-
-// Measures
-$baseSpacing: 1.1vw;
-$primaryBorderRadius: 0.75vw;
-$secondaryBorderRadius: 2.5vw;
-$decoBlocksWidth: 6%;
-// Colors
-$primaryColor: #F7C10E;
-$secondaryColor: #E70113;
-$cardColor: #F2F2F2;
-$backgroundColor: rgba($primaryColor, 0.85);
-// Others
-$shadow: 0px 0px 8px 0px rgba(#000, 0.5);
 
 
 // --- General styles --- //
@@ -155,8 +141,8 @@ body {
                         border-radius: $primaryBorderRadius;
                         background-color: $cardColor;
                         box-shadow: 0px 0px 5px 0px rgba(#000, 0.15);
-                        transform: scale(0.87);
-                        opacity: 0.8;
+                        transform: scale($nextLevelScale);
+                        opacity: $nextLevelOpacity;
 
                         &#current-level {
                             background-color: $cardColor;
@@ -275,5 +261,54 @@ body {
                 }
             }
         }
+    }
+}
+
+
+// --- Animations --- //
+
+@include animation(current-level-slide-in-from-top, .75s, (
+    animation-timing-function: cubic-bezier(0.250, 0.250, 0.680, 1.250)
+)) {
+    from {
+        transform: scale(1) translateY(-250%);
+    }
+    to {
+        transform: scale(1) translateY(0%);
+    }
+}
+
+@include animation(current-level-slide-out, .75s, (
+    animation-timing-function: cubic-bezier(0.600, -0.250, 0.735, 0.045)
+)) {
+    from {
+        transform: scale(1) translateY(0%);
+    }
+    to {
+        transform: scale(1) translateY(-250%);
+    }
+}
+
+@include animation(next-level-slide-in-from-top, .75s, (
+    animation-timing-function: cubic-bezier(0.250, 0.250, 0.680, 1.250)
+)) {
+    from {
+        transform: scale($nextLevelScale) translateY(-250%);
+    }
+    to {
+        transform: scale($nextLevelScale) translateY(0%);
+    }
+}
+
+@include animation(next-level-to-current, 1s, (
+    animation-timing-function: cubic-bezier(0.600, -0.090, 0.735, 0.045)
+)) {
+    from {
+        transform: scale($nextLevelScale) translateX(0%);
+        opacity: $nextLevelOpacity;
+    }
+    to {
+        transform: scale(1) translateX(-100%);
+        opacity: 1;
     }
 }
