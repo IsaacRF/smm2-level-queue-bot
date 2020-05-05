@@ -36,6 +36,7 @@ body {
 .main-wrapper .overlay-container {
   display: flex;
   position: relative;
+  padding: 10px 10px 0 10px;
   width: 100%;
   height: auto;
   flex-direction: column;
