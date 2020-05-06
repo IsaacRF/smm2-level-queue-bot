@@ -320,8 +320,28 @@ def AddLevel(code, data):
 
     if levelCodePattern.match(code):
         try:
+            isUIUpdateRequired = (CountLevels() <= 1)
+
             with open(levelsFile, 'a') as file:
                 file.write(code + " [@" + data.UserName + "]" + '\n')
+
+            #UPDATE OVERLAY IF REQUIRED
+            if isUIUpdateRequired:
+                with open(levelsFile, 'r') as file:
+                    levels = file.readlines()
+
+                    if len(levels) > 0:
+                        currentLevel = levels[0].strip()
+                    else:
+                        currentLevel = ""
+
+                    if len(levels) > 1:
+                        nextLevel = levels[1].strip()
+                    else:
+                        nextLevel = ""
+
+                    overlayInfo = OverlayInfo(currentLevel, nextLevel, wins, skips)
+                    Parent.BroadcastWsEvent(eventLevelUpdate, json.dumps(overlayInfo.__dict__))
 
             SendResp(data, MySet.Usage, "@" + data.UserName + " ha añadido el nivel " + code + " a la cola en posición [" + str(CountLevels()) + "]")
         except:
