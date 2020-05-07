@@ -91,33 +91,40 @@ $(function() {
             this.visible = !this.visible;
         }
 
-        this._playAnimation = function(animation, duration = 750, callback = null) {
-            if (typeof duration === "undefined" || duration === null) {
-                duration = 750;
+        // animationDuration -> real duration of the animation, as set in the CSS code. The callback is called after animationDuration.
+        // animationRelease -> real animation release (animation class removed). By default, the animation is released as soon as it finishes.
+        this._playAnimation = function(animation, callback = null, animationDuration = 750, animationRelease = 750) {
+            if (typeof animationDuration === "undefined" || animationDuration === null) {
+                animationDuration = 750;
+            }
+            if (typeof animationRelease === "undefined" || animationRelease === null) {
+                animationRelease = animationDuration;
             }
             this.card.addClass(animation);
+            if (callback != null && callback instanceof Function) {
+                setTimeout(function() {
+                    callback();
+                }, animationDuration);
+            }
             setTimeout(function() {
                 level.card.removeClass(animation);
-                if (callback != null && callback instanceof Function) {
-                    callback();
-                }
-            }, duration);
+            }, animationRelease);
         }
 
-        this.slideIn = function(callback, forceDuration = null) {
+        this.slideIn = function(callback, animationDuration = null, animationRelease = null) {
             var animClass = `${this.id}-slide-in`;
             this.show();
-            this._playAnimation(animClass, forceDuration, callback);
+            this._playAnimation(animClass, callback, animationDuration, animationRelease);
         }
 
-        this.slideOut = function(callback, forceDuration = null) {
+        this.slideOut = function(callback, animationDuration = null, animationRelease = null) {
             var animClass = `${this.id}-slide-out`;
-            this._playAnimation(animClass, forceDuration, callback);
+            this._playAnimation(animClass, callback, animationDuration, animationRelease);
         }
 
         if (this.id == "next-level") {
-            this.moveToCurrent = function(callback, forceDuration = null) {
-                this._playAnimation("next-level-to-current", forceDuration, callback);
+            this.moveToCurrent = function(callback, animationDuration = null, animationRelease = null) {
+                this._playAnimation("next-level-to-current", callback, animationDuration, animationRelease);
             }
         }
     }
@@ -154,7 +161,7 @@ $(function() {
                 if (currentLevelData.code != currentLevel.code.text()) {
                     currentLevel.slideOut(function() {
                         currentLevel.update(currentLevelData);
-                    }, 1000);
+                    }, 750, 1000);
                     nextLevel.moveToCurrent(function() {
                         if (hasNext) {
                             nextLevel.update(nextLevelData);
