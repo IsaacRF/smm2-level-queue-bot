@@ -1,3 +1,9 @@
+/*! SMM2 Level Queue System v1.1.0
+    (c) Isaac Rodríguez & Gabriel Rodríguez
+    Isaac Rodríguez Fernández | https://isaacrf.com
+    Gabriel Rodríguez Fernández | https://twitter.com/Gabri239
+*/
+
 $(function() {
     if( !window.WebSocket ) {
         return;
@@ -17,8 +23,8 @@ $(function() {
         {
             // Format your Authentication Information
             var auth = {
-                author: "IsaacRF239",
-                website: "https://isaacrf.com",
+                author: "IsaacRF239 & Gabriel Rodríguez",
+                website: "https://twitch.tv/clickandslash",
                 api_key: API_Key,
                 events: [
                     "EVENT_SMM2QS_LEVEL_UPDATE",

@@ -18,7 +18,9 @@ import ctypes
 # ---------------------------------------
 ScriptName = "SMM2 Queue"
 Website = "https://twitch.tv/clickandslash"
-Creator = "IsaacRF239 from Click and Slash"
+Creator = "IsaacRF239 & Gabriel Rodríguez"
+Author1Website = "https://isaacrf.com"
+Author2Website = "https://twitter.com/gabri239"
 Version = "1.1.0"
 Description = "Super Mario Maker 2 level queue system"
 
