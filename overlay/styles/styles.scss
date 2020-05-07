@@ -129,10 +129,10 @@ body {
 
                     .placeholders {
                         position: absolute;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: stretch;
-                    align-items: stretch;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: stretch;
+                        align-items: stretch;
                         top: 0;
                         right: 0;
                         bottom: 0;
@@ -158,71 +158,71 @@ body {
                         justify-content: stretch;
                         align-items: stretch;
 
-                    .level-info {
-                        flex: 1 1 1px;
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: stretch;
-                        align-items: center;
-                        padding: 1.5%;
-                        border-radius: $primaryBorderRadius;
-                        background-color: $cardColor;
-                        box-shadow: 0px 0px 5px 0px rgba(#000, 0.15);
-                        transform: scale($nextLevelScale);
-                        opacity: $nextLevelOpacity;
-
-                        &#current-level {
+                        .level-info {
+                            flex: 1 1 1px;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: stretch;
+                            align-items: center;
+                            padding: 1.5%;
+                            border-radius: $primaryBorderRadius;
                             background-color: $cardColor;
-                            transform: scale(1);
-                            opacity: 1;
-                        }
+                            box-shadow: 0px 0px 5px 0px rgba(#000, 0.15);
+                            transform: scale($nextLevelScale);
+                            opacity: $nextLevelOpacity;
 
-                        .avatar {
-                            flex: 0 0 18%;
-                            overflow: hidden;
-                            position: relative;
-                            margin-right: 1.5vw;
-                            border-radius: 50%;
-
-                            &::before {
-                                content: '';
-                                display: block;
-                                width: 100%;
-                                padding-top: 100%;
+                            &#current-level {
+                                background-color: $cardColor;
+                                transform: scale(1);
+                                opacity: 1;
                             }
 
-                            .user-avatar {
-                                position: absolute;
-                                top: 0;
-                                right: 0;
-                                bottom: 0;
-                                left: 0;
-                                width: 100%;
-                                height: 100%;
-                            }
-                        }
+                            .avatar {
+                                flex: 0 0 18%;
+                                overflow: hidden;
+                                position: relative;
+                                margin-right: 1.5vw;
+                                border-radius: 50%;
 
-                        .info {
-                            flex: 1 1 auto;
-                            font-size: 2vw;
+                                &::before {
+                                    content: '';
+                                    display: block;
+                                    width: 100%;
+                                    padding-top: 100%;
+                                }
 
-                            .user-name {
-                                margin-bottom: .35em;
-                                color: #656565;
+                                .user-avatar {
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                }
                             }
 
-                            .level-code {
-                                font-size: 2.4vw;
-                                letter-spacing: .1em;
-                                color: #222;
-                                white-space: nowrap;
+                            .info {
+                                flex: 1 1 auto;
+                                font-size: 2vw;
+
+                                .user-name {
+                                    margin-bottom: .35em;
+                                    color: #656565;
+                                }
+
+                                .level-code {
+                                    font-size: 2.4vw;
+                                    letter-spacing: .1em;
+                                    color: #222;
+                                    white-space: nowrap;
+                                }
                             }
-                        }
 
                             &.empty {
                                 visibility: hidden;
-                    }
-                }
+                            }
+                        }
                     }
                 }
 
@@ -274,6 +274,8 @@ body {
 
             .prompt {
                 overflow: hidden;
+                position: relative;
+                top: -100%;
                 padding: 1vw;
                 background-color: rgba(#FFF, 0.75);
                 $mask: linear-gradient(
@@ -285,11 +287,29 @@ body {
                 );
                 -webkit-mask-image: $mask;
                 mask-image: $mask;
-                transform: translateY(-100%);
+                transition: transform 0.75s ease-in-out;
+                backface-visibility: hidden;
 
                 .message {
                     font-size: 2vw;
                     font-family: 'Roboto', sans-serif;
+                    white-space: nowrap;
+                    visibility: hidden;
+                    backface-visibility: hidden;
+
+                    p {
+                        float: left;
+                        margin: 0;
+                        white-space: nowrap;
+
+                        & + p {
+                            margin-left: 2em;
+                        }
+                    }
+                }
+
+                &.visible {
+                    transform: translateY(100%);
                 }
             }
         }
@@ -298,6 +318,19 @@ body {
 
 
 // --- Animations --- //
+
+@include animation(prompt-marquee, 20s, (
+    animation-timing-function: linear,
+    animation-iteration-count: infinite,
+    visibility: visible !important
+)) {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
 
 @include animation(current-level-placeholder-pop-in, .75s, (
     animation-timing-function: cubic-bezier(0.250, 0.250, 0.680, 1.250)

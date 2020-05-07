@@ -268,16 +268,63 @@ body {
 
 .main-wrapper .overlay-container .prompt-container .prompt {
   overflow: hidden;
+  position: relative;
+  top: -100%;
   padding: 1vw;
   background-color: rgba(255, 255, 255, 0.75);
   -webkit-mask-image: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 5%, #FFF 95%, rgba(255, 255, 255, 0));
   mask-image: linear-gradient(to right, rgba(255, 255, 255, 0), #FFF 5%, #FFF 95%, rgba(255, 255, 255, 0));
-  transform: translateY(-100%);
+  transition: transform 0.75s ease-in-out;
+  backface-visibility: hidden;
 }
 
 .main-wrapper .overlay-container .prompt-container .prompt .message {
   font-size: 2vw;
   font-family: 'Roboto', sans-serif;
+  white-space: nowrap;
+  visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.main-wrapper .overlay-container .prompt-container .prompt .message p {
+  float: left;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.main-wrapper .overlay-container .prompt-container .prompt .message p + p {
+  margin-left: 2em;
+}
+
+.main-wrapper .overlay-container .prompt-container .prompt.visible {
+  transform: translateY(100%);
+}
+
+@keyframes prompt-marquee {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.prompt-marquee {
+  animation-fill-mode: forwards;
+  animation-name: prompt-marquee;
+  animation-duration: 20s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  visibility: visible !important;
+}
+
+@keyframes current-level-placeholder-pop-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .current-level-placeholder-pop-in {

@@ -92,9 +92,50 @@ if( window.WebSocket ){
         }
     }
 
+    function startPrompt() {
+        var duration = ui.prompt.settings.duration * 1000;
+        var frequency = ui.prompt.settings.frequency * 1000;
+        setTimeout(function() {
+            ui.prompt.toggle(true);
+            setInterval(function() {
+                ui.prompt.toggle(true);
+            }, frequency + duration);
+        }, frequency);
+    }
+
+    function togglePrompt(autoClose = false) {
+        $(".prompt").toggleClass("visible");
+        setTimeout(function() {
+            $(".prompt").find(".message").toggleClass("prompt-marquee")
+        }, 500);
+        if (autoClose) {
+            setTimeout(ui.prompt.toggle, ui.prompt.settings.duration * 1000);
+        }
+    }
+
+    window.ui = {
+        update: updateUI,
+        prompt: {
+            start: startPrompt,
+            toggle: togglePrompt,
+            settings: {
+                enabled: false,
+                frequency: 2,
+                duration: 5
+            }
+        }
+    };
+
     if (typeof testsEnabled === 'undefined' || testsEnabled == false) {
         Connect();
     } else {
-        console.log('Tests enabled, socket connection omitted. Remove tests.js import from index to enter prod mode')
+        console.log('Tests enabled, socket connection omitted. Remove tests.js import from index to enter prod mode');
+        $(function() {
+            $(".main-wrapper").addClass("test");
+        });
+    }
+
+    if (ui.prompt.settings.enabled) {
+        ui.prompt.start();
     }
 }
