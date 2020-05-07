@@ -40,7 +40,6 @@ body {
     align-items: center;
 
     &.test {
-        //padding: 20px;
         background-color: #666;
     }
 
@@ -126,10 +125,38 @@ body {
 
                 .levels {
                     flex: 1 1 auto;
+                    position: relative;
+
+                    .placeholders {
+                        position: absolute;
                     display: flex;
                     flex-direction: row;
                     justify-content: stretch;
                     align-items: stretch;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+
+                        .placeholder {
+                            flex: 1 1 50%;
+                            border: 4px dashed #000;
+                            border-radius: $primaryBorderRadius;
+                            background-color: #aeaeae;
+                            mix-blend-mode: multiply;
+                            opacity: 0.15;
+
+                            &:last-child {
+                                transform: scale($nextLevelScale);
+                            }
+                        }
+                    }
+
+                    .levels-container {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: stretch;
+                        align-items: stretch;
 
                     .level-info {
                         flex: 1 1 1px;
@@ -191,6 +218,11 @@ body {
                                 white-space: nowrap;
                             }
                         }
+
+                            &.empty {
+                                visibility: hidden;
+                    }
+                }
                     }
                 }
 
@@ -267,7 +299,18 @@ body {
 
 // --- Animations --- //
 
-@include animation(current-level-slide-in-from-top, .75s, (
+@include animation(current-level-placeholder-pop-in, .75s, (
+    animation-timing-function: cubic-bezier(0.250, 0.250, 0.680, 1.250)
+)) {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@include animation(current-level-slide-in, .75s, (
     animation-timing-function: cubic-bezier(0.250, 0.250, 0.680, 1.250)
 )) {
     from {
@@ -289,7 +332,18 @@ body {
     }
 }
 
-@include animation(next-level-slide-in-from-top, .75s, (
+@include animation(next-level-placeholder-pop-in, .75s, (
+    animation-timing-function: cubic-bezier(0.250, 0.250, 0.680, 1.250)
+)) {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale($nextLevelScale);
+    }
+}
+
+@include animation(next-level-slide-in, .75s, (
     animation-timing-function: cubic-bezier(0.250, 0.250, 0.680, 1.250)
 )) {
     from {
