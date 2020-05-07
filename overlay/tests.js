@@ -36,7 +36,7 @@ function testGenerateRandomLevelCode() {
  */
 function testInit(levelsNumber) {
     testLevels = [];
-    testAddLevel(levelsNumber);
+    testAddLevel(levelsNumber, true);
     testUpdateUI();
 }
 
@@ -73,14 +73,14 @@ function testSkipLevel() {
  * if there are 1 or less levels remaining in list.
  * @param {int} levelsNumber Number of levels to add to list. Default is 1.
  */
-function testAddLevel(levelsNumber=1) {
+function testAddLevel(levelsNumber=1, avoidUpdate=false) {
     var isUpdateUIRequired = (testLevels.length <= 1);
 
     for (let i = 0; i < levelsNumber; i++) {
         testLevels.push(new TestLevel());
     }
 
-    if (isUpdateUIRequired) {
+    if (isUpdateUIRequired && !avoidUpdate) {
         testUpdateUI();
     }
 }
@@ -96,7 +96,7 @@ function testUpdateUI() {
                         '"wins": ' + testWins +', ' +
                         '"skips": ' + testSkips + '}';
 
-    updateUI(testJsonData);
+    ui.update(testJsonData);
 }
 
 /**
@@ -111,7 +111,7 @@ function testUpdateUIRandom(levelsReturned) {
                         '"wins": ' + testWins +', ' +
                         '"skips": ' + testSkips + '}';
 
-    updateUI(testJsonData);
+    ui.update(testJsonData);
 }
 
 class TestLevel {

@@ -1,4 +1,8 @@
-if( window.WebSocket ){
+$(function() {
+    if( !window.WebSocket ) {
+        return;
+    }
+
     //---------------------------------
     //  Variables
     //---------------------------------
@@ -35,7 +39,7 @@ if( window.WebSocket ){
 
             if(jsonObject.event == "EVENT_SMM2QS_LEVEL_UPDATE")
             {
-                updateUI(jsonObject.data);
+                ui.update(jsonObject.data);
             }
         }
 
@@ -47,30 +51,130 @@ if( window.WebSocket ){
         }
     }
 
+    function Level(cardId) {
+        var level = this;
+        this.id = cardId;
+        this.card = $(`#${cardId}`);
+        this.user = this.card.find(".user-name");
+        this.code = this.card.find(".level-code");
+        this.avatar = this.card.find(".user-avatar");
+        this.avatarContainer = this.avatar.parent();
+        this.visible = !this.card.is(".empty");
+
+        this.update = function(data) {
+            this.user.text(data.user);
+            this.code.text(data.code);
+            if (data.user in ui.avatarCache) {
+                this.avatar.attr("src", ui.avatarCache[data.user]);
+            } else {
+                this.avatarContainer.addClass("loading");
+                $.get(apiAvatarEndPoint + data.user, function(response) {
+                    ui.avatarCache[data.user] = response;
+                    level.avatar.attr("src", response);
+                    level.avatarContainer.removeClass("loading");
+                });
+            }
+        }
+
+        this.hide = function() {
+            this.card.addClass("empty");
+            this.visible = false;
+        }
+
+        this.show = function() {
+            this.card.removeClass("empty");
+            this.visible = true;
+        }
+
+        this.toggle = function() {
+            this.card.toggleClass("empty");
+            this.visible = !this.visible;
+        }
+
+        this._playAnimation = function(animation, duration = 750, callback = null) {
+            if (typeof duration === "undefined" || duration === null) {
+                duration = 750;
+            }
+            this.card.addClass(animation);
+            setTimeout(function() {
+                level.card.removeClass(animation);
+                if (callback != null && callback instanceof Function) {
+                    callback();
+                }
+            }, duration);
+        }
+
+        this.slideIn = function(callback, forceDuration = null) {
+            var animClass = `${this.id}-slide-in`;
+            this.show();
+            this._playAnimation(animClass, forceDuration, callback);
+        }
+
+        this.slideOut = function(callback, forceDuration = null) {
+            var animClass = `${this.id}-slide-out`;
+            this._playAnimation(animClass, forceDuration, callback);
+        }
+
+        if (this.id == "next-level") {
+            this.moveToCurrent = function(callback, forceDuration = null) {
+                this._playAnimation("next-level-to-current", forceDuration, callback);
+            }
+        }
+    }
+
+    var currentLevel = new Level('current-level');
+    var nextLevel = new Level('next-level');
+
     /**
      * Updates UI according to data received
      * @param {string} jsonData
      */
     function updateUI(jsonData) {
-        //UI Update
         var data = JSON.parse(jsonData);
-        if (data.currentLevelCode != "") {
-            $("#current-level .user-name").text(data.currentLevelUser);
-            $("#current-level .level-code").text(data.currentLevelCode);
-            $("#current-level").removeClass('empty');
+        var hasCurrent = (data.currentLevelCode != "");
+        var hasNext = data.nextLevelCode != "";
+        var currentLevelData = {
+            user: data.currentLevelUser,
+            code: data.currentLevelCode
+        };
+        var nextLevelData = {
+            user: data.nextLevelUser,
+            code: data.nextLevelCode
+        };
+
+        if (hasCurrent) {
+            if (!currentLevel.visible) {
+                currentLevel.update(currentLevelData);
+                currentLevel.slideIn();
+                if (hasNext) {
+                    nextLevel.update(nextLevelData);
+                    nextLevel.slideIn();
+                }
+            } else {
+                if (currentLevelData.code != currentLevel.code.text()) {
+                    currentLevel.slideOut(function() {
+                        currentLevel.update(currentLevelData);
+                    }, 1000);
+                    nextLevel.moveToCurrent(function() {
+                        if (hasNext) {
+                            nextLevel.update(nextLevelData);
+                            nextLevel.slideIn();
+                        } else {
+                            nextLevel.hide();
+                        }
+                    }, 1000);
+                } else if (nextLevelData.code != nextLevel.code.text()) {
+                    nextLevel.update(nextLevelData);
+                    nextLevel.slideIn();
+                }
+            }
         } else {
-            $("#current-level").addClass('empty');
+            currentLevel.slideOut(function() {
+                currentLevel.hide();
+            });
         }
 
-        if (data.nextLevelCode != "") {
-            $("#next-level .user-name").text(data.nextLevelUser);
-            $("#next-level .level-code").text(data.nextLevelCode);
-            $("#next-level").removeClass('empty');
-        } else {
-            $("#next-level").addClass('empty');
-        }
-
-        if (data.currentLevelCode != "" && data.nextLevelCode == "") {
+        if (!currentLevel.visible && !nextLevel.visible) {
             $("#container").addClass('empty');
         } else {
             $("#container").removeClass('empty');
@@ -78,50 +182,36 @@ if( window.WebSocket ){
 
         $("#wins").text(data.wins);
         $("#skips").text(data.skips);
-
-        if (data.currentLevelUser != "") {
-            $.get(apiAvatarEndPoint + data.currentLevelUser, function(response) {
-                $( "#current-level .user-avatar" ).attr('src', response);
-            });
-        }
-
-        if (data.nextLevelUser != "") {
-            $.get(apiAvatarEndPoint + data.nextLevelUser, function(response) {
-                $( "#next-level .user-avatar" ).attr('src', response);
-            });
-        }
     }
 
-    function startPrompt() {
-        var duration = ui.prompt.settings.duration * 1000;
-        var frequency = ui.prompt.settings.frequency * 1000;
-        setTimeout(function() {
-            ui.prompt.toggle(true);
-            setInterval(function() {
-                ui.prompt.toggle(true);
-            }, frequency + duration);
-        }, frequency);
-    }
-
-    function togglePrompt(autoClose = false) {
-        $(".prompt").toggleClass("visible");
-        setTimeout(function() {
-            $(".prompt").find(".message").toggleClass("prompt-marquee")
-        }, 500);
-        if (autoClose) {
-            setTimeout(ui.prompt.toggle, ui.prompt.settings.duration * 1000);
-        }
-    }
-
+    // Expose necessary functionalities
     window.ui = {
         update: updateUI,
+        avatarCache: {},
         prompt: {
-            start: startPrompt,
-            toggle: togglePrompt,
+            start: function() {
+                var duration = ui.prompt.settings.duration * 1000;
+                var frequency = ui.prompt.settings.frequency * 1000;
+                setTimeout(function() {
+                    ui.prompt.toggle(true);
+                    setInterval(function() {
+                        ui.prompt.toggle(true);
+                    }, frequency + duration);
+                }, frequency);
+            },
+            toggle: function(autoClose = false) {
+                $(".prompt").toggleClass("visible");
+                setTimeout(function() {
+                    $(".prompt").find(".message").toggleClass("prompt-marquee");
+                }, 500);
+                if (autoClose) {
+                    setTimeout(ui.prompt.toggle, ui.prompt.settings.duration * 1000);
+                }
+            },
             settings: {
-                enabled: false,
-                frequency: 2,
-                duration: 5
+                enabled: true,
+                frequency: 60,  // Show every X seconds
+                duration: 20    // Show for X seconds (ideally, same as the marquee animation duration)
             }
         }
     };
@@ -130,12 +220,11 @@ if( window.WebSocket ){
         Connect();
     } else {
         console.log('Tests enabled, socket connection omitted. Remove tests.js import from index to enter prod mode');
-        $(function() {
-            $(".main-wrapper").addClass("test");
-        });
+        $(".main-wrapper").addClass("test");
     }
 
     if (ui.prompt.settings.enabled) {
         ui.prompt.start();
     }
-}
+
+});

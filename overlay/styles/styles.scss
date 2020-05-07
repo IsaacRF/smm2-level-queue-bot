@@ -183,6 +183,7 @@ body {
                                 position: relative;
                                 margin-right: 1.5vw;
                                 border-radius: 50%;
+                                background-color: #cacaca;
 
                                 &::before {
                                     content: '';
@@ -199,6 +200,33 @@ body {
                                     left: 0;
                                     width: 100%;
                                     height: 100%;
+                                }
+
+                                .loading-spinner {
+                                    @keyframes spinner-loader { to { transform: scale(1.05) rotate(360deg); } }
+                                    display: none;
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    transform: scale(1.05);
+                                    border-radius: 50%;
+                                    border: 0.75vw solid #929292;
+                                    border-top-color: $primaryColor;
+                                    animation: spinner-loader .65s linear infinite;
+                                }
+
+                                &.loading {
+                                    .user-avatar {
+                                        visibility: hidden;
+                                    }
+
+                                    .loading-spinner {
+                                        display: block;
+                                    }
                                 }
                             }
 
