@@ -67,19 +67,24 @@ $(function() {
         this.avatarContainer = this.avatar.parent();
         this.visible = !this.card.is(".empty");
 
+        this.avatar.on("load", function() {
+            level.avatarContainer.removeClass("loading");
+        });
+
         this.update = function(data) {
+            if (this.user.text() != data.user) {
+                this.avatarContainer.addClass("loading");
+                if (data.user in ui.avatarCache) {
+                    this.avatar.attr("src", ui.avatarCache[data.user]);
+                } else {
+                    $.get(apiAvatarEndPoint + data.user, function(response) {
+                        ui.avatarCache[data.user] = response;
+                        level.avatar.attr("src", response);
+                    });
+                }
+            }
             this.user.text(data.user);
             this.code.text(data.code);
-            if (data.user in ui.avatarCache) {
-                this.avatar.attr("src", ui.avatarCache[data.user]);
-            } else {
-                this.avatarContainer.addClass("loading");
-                $.get(apiAvatarEndPoint + data.user, function(response) {
-                    ui.avatarCache[data.user] = response;
-                    level.avatar.attr("src", response);
-                    level.avatarContainer.removeClass("loading");
-                });
-            }
         }
 
         this.hide = function() {
