@@ -1,3 +1,5 @@
+@use 'sass:string';
+
 // --- Variables --- //
 
 // Measures
@@ -30,5 +32,20 @@ $shadow: 0px 0px 8px 0px rgba(#000, 0.5);
         @each $attr, $val in $extraAttrs {
             #{$attr}: #{$val};
         }
+    }
+}
+
+@mixin inline-animation( $duration, $extraAttrs: () ) {
+    $name: inline-#{string.unique-id()};
+
+    @keyframes #{$name} {
+        @content;
+    }
+
+    animation-fill-mode: forwards;
+    animation-name: $name;
+    animation-duration: $duration;
+    @each $attr, $val in $extraAttrs {
+        #{$attr}: #{$val};
     }
 }

@@ -57,89 +57,99 @@ $(function() {
         }
     }
 
+    function UIElement(elementId) {
+        this.id = elementId;
+        this.element = $(`#${elementId}`);
+        this.visible = !this.element.is(".hidden");
+    }
+
+    UIElement.prototype.hide = function() {
+        this.element.addClass("hidden");
+        this.visible = false;
+    }
+
+    UIElement.prototype.show = function() {
+        this.element.removeClass("hidden");
+        this.visible = true;
+    }
+
+    UIElement.prototype.toggle = function() {
+        this.element.toggleClass("hidden");
+        this.visible = !this.visible;
+    }
+
+    // animationDuration -> real duration of the animation, as set in the CSS code. The callback is called after animationDuration.
+    // animationRelease -> real animation release (animation class removed). By default, the animation is released as soon as it finishes.
+    UIElement.prototype._playAnimation = function(animation, callback = null, animationDuration = 750, animationRelease = 750) {
+        var _this = this;
+        if (typeof animationDuration === "undefined" || animationDuration === null) {
+            animationDuration = 750;
+        }
+        if (typeof animationRelease === "undefined" || animationRelease === null) {
+            animationRelease = animationDuration;
+        }
+        this.element.addClass(animation);
+        if (callback != null && callback instanceof Function) {
+            setTimeout(function() {
+                callback();
+            }, animationDuration);
+        }
+        setTimeout(function() {
+            _this.element.removeClass(animation);
+        }, animationRelease);
+    }
+
+    UIElement.prototype.slideIn = function(callback, animationDuration = null, animationRelease = null) {
+        var animClass = `${this.id}-slide-in`;
+        this.show();
+        this._playAnimation(animClass, callback, animationDuration, animationRelease);
+    }
+
+    UIElement.prototype.slideOut = function(callback, animationDuration = null, animationRelease = null) {
+        var animClass = `${this.id}-slide-out`;
+        this._playAnimation(animClass, callback, animationDuration, animationRelease);
+    }
+
     function Level(cardId) {
-        var level = this;
-        this.id = cardId;
-        this.card = $(`#${cardId}`);
-        this.user = this.card.find(".user-name");
-        this.code = this.card.find(".level-code");
-        this.avatar = this.card.find(".user-avatar");
+        UIElement.call(this, cardId);
+        var _this = this;
+        this.user = this.element.find(".user-name");
+        this.code = this.element.find(".level-code");
+        this.avatar = this.element.find(".user-avatar");
         this.avatarContainer = this.avatar.parent();
-        this.visible = !this.card.is(".empty");
 
         this.avatar.on("load", function() {
-            level.avatarContainer.removeClass("loading");
+            _this.avatarContainer.removeClass("loading");
         });
+    }
 
-        this.update = function(data) {
-            if (this.user.text() != data.user) {
-                this.avatarContainer.addClass("loading");
-                if (data.user in ui.avatarCache) {
-                    this.avatar.attr("src", ui.avatarCache[data.user]);
-                } else {
-                    $.get(apiAvatarEndPoint + data.user, function(response) {
-                        ui.avatarCache[data.user] = response;
-                        level.avatar.attr("src", response);
-                    });
-                }
+    Level.prototype = Object.create(UIElement.prototype);
+    Level.prototype.constructor = Level;
+
+    Level.prototype.update = function(data) {
+        if (this.user.text() != data.user) {
+            this.avatarContainer.addClass("loading");
+            if (data.user in ui.avatarCache) {
+                this.avatar.attr("src", ui.avatarCache[data.user]);
+            } else {
+                var _this = this;
+                $.get(apiAvatarEndPoint + data.user, function(response) {
+                    ui.avatarCache[data.user] = response;
+                    _this.avatar.attr("src", response);
+                });
             }
-            this.user.text(data.user);
-            this.code.text(data.code);
         }
+        this.user.text(data.user);
+        this.code.text(data.code);
+    }
 
-        this.hide = function() {
-            this.card.addClass("empty");
-            this.visible = false;
-        }
-
-        this.show = function() {
-            this.card.removeClass("empty");
-            this.visible = true;
-        }
-
-        this.toggle = function() {
-            this.card.toggleClass("empty");
-            this.visible = !this.visible;
-        }
-
-        // animationDuration -> real duration of the animation, as set in the CSS code. The callback is called after animationDuration.
-        // animationRelease -> real animation release (animation class removed). By default, the animation is released as soon as it finishes.
-        this._playAnimation = function(animation, callback = null, animationDuration = 750, animationRelease = 750) {
-            if (typeof animationDuration === "undefined" || animationDuration === null) {
-                animationDuration = 750;
-            }
-            if (typeof animationRelease === "undefined" || animationRelease === null) {
-                animationRelease = animationDuration;
-            }
-            this.card.addClass(animation);
-            if (callback != null && callback instanceof Function) {
-                setTimeout(function() {
-                    callback();
-                }, animationDuration);
-            }
-            setTimeout(function() {
-                level.card.removeClass(animation);
-            }, animationRelease);
-        }
-
-        this.slideIn = function(callback, animationDuration = null, animationRelease = null) {
-            var animClass = `${this.id}-slide-in`;
-            this.show();
-            this._playAnimation(animClass, callback, animationDuration, animationRelease);
-        }
-
-        this.slideOut = function(callback, animationDuration = null, animationRelease = null) {
-            var animClass = `${this.id}-slide-out`;
-            this._playAnimation(animClass, callback, animationDuration, animationRelease);
-        }
-
-        if (this.id == "next-level") {
-            this.moveToCurrent = function(callback, animationDuration = null, animationRelease = null) {
-                this._playAnimation("next-level-to-current", callback, animationDuration, animationRelease);
-            }
+    Level.prototype.moveToCurrent = function(callback, animationDuration = null, animationRelease = null) {
+        if (this.id = 'next-level') {
+            this._playAnimation("next-level-to-current", callback, animationDuration, animationRelease);
         }
     }
 
+    var noLevels = new UIElement('no-levels');
     var currentLevel = new Level('current-level');
     var nextLevel = new Level('next-level');
 
@@ -161,6 +171,9 @@ $(function() {
         };
 
         if (hasCurrent) {
+            noLevels.slideOut(function() {
+                noLevels.hide();
+            }, 1750);
             if (!currentLevel.visible) {
                 currentLevel.update(currentLevelData);
                 currentLevel.slideIn();
@@ -189,13 +202,8 @@ $(function() {
         } else {
             currentLevel.slideOut(function() {
                 currentLevel.hide();
+                noLevels.slideIn(null, 1750);
             });
-        }
-
-        if (!currentLevel.visible && !nextLevel.visible) {
-            $("#container").addClass('empty');
-        } else {
-            $("#container").removeClass('empty');
         }
 
         $("#wins").text(data.wins);

@@ -20,12 +20,19 @@
 
                     <div class="main-bar">
                         <div class="levels">
+                            <div id="no-levels" class="no-levels hidden">
+                                <img src="images/no-levels.gif" alt="">
+                                <div class="text">
+                                    <p>¡No hay niveles en la cola!</p>
+                                    <p>Añade el tuyo usando el comando <strong>!add</strong> en el chat.</p>
+                                </div>
+                            </div>
                             <div class="placeholders">
                                 <div class="placeholder"></div>
                                 <div class="placeholder"></div>
                             </div>
                             <div class="levels-container">
-                                <div id="current-level" class="level-info empty">
+                                <div id="current-level" class="level-info hidden">
                                     <div class="avatar">
                                         <img class="user-avatar" src="https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png">
                                         <div class="loading-spinner"></div>
@@ -35,7 +42,7 @@
                                         <div class="level-code"></div>
                                     </div>
                                 </div>
-                                <div id="next-level" class="level-info empty">
+                                <div id="next-level" class="level-info hidden">
                                     <div class="avatar">
                                         <img class="user-avatar" src="https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png">
                                         <div class="loading-spinner"></div>
