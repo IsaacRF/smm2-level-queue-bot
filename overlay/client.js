@@ -127,20 +127,25 @@ $(function() {
     Level.prototype.constructor = Level;
 
     Level.prototype.update = function(data) {
-        if (this.user.text() != data.user) {
-            this.avatarContainer.addClass("loading");
-            if (data.user in ui.avatarCache) {
-                this.avatar.attr("src", ui.avatarCache[data.user]);
-            } else {
-                var _this = this;
-                $.get(apiAvatarEndPoint + data.user, function(response) {
-                    ui.avatarCache[data.user] = response;
-                    _this.avatar.attr("src", response);
-                });
+        if (data === null) {
+            this.user.text('');
+            this.code.text('');
+        } else {
+            if (this.user.text() != data.user) {
+                this.avatarContainer.addClass("loading");
+                if (data.user in ui.avatarCache) {
+                    this.avatar.attr("src", ui.avatarCache[data.user]);
+                } else {
+                    var _this = this;
+                    $.get(apiAvatarEndPoint + data.user, function(response) {
+                        ui.avatarCache[data.user] = response;
+                        _this.avatar.attr("src", response);
+                    });
+                }
             }
+            this.user.text(data.user);
+            this.code.text(data.code);
         }
-        this.user.text(data.user);
-        this.code.text(data.code);
     }
 
     Level.prototype.moveToCurrent = function(callback, animationDuration = null, animationRelease = null) {
@@ -192,6 +197,7 @@ $(function() {
                             nextLevel.slideIn();
                         } else {
                             nextLevel.hide();
+                            nextLevel.update(null);
                         }
                     }, 1000);
                 } else if (nextLevelData.code != nextLevel.code.text()) {
@@ -202,6 +208,7 @@ $(function() {
         } else {
             currentLevel.slideOut(function() {
                 currentLevel.hide();
+                currentLevel.update(null);
                 noLevels.slideIn(null, 1750);
             });
         }
