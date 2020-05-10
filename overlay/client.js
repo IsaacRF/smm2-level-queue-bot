@@ -176,9 +176,11 @@ $(function() {
         };
 
         if (hasCurrent) {
-            noLevels.slideOut(function() {
-                noLevels.hide();
-            }, 1750);
+            if (noLevels.visible) {
+                noLevels.slideOut(function() {
+                    noLevels.hide();
+                }, 1750);
+            }
             if (!currentLevel.visible) {
                 currentLevel.update(currentLevelData);
                 currentLevel.slideIn();
