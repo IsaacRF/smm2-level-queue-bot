@@ -3,9 +3,9 @@
     "OnlyLive": {
     "type": "checkbox",
     "value": false,
-  	"label": "Only when live",
+    "label": "Only when live",
     "tooltip": "Command is only active when stream is live",
-  	"group": "General"
+    "group": "General"
   },
     "command_add": {
     "type": "textbox",
@@ -63,48 +63,20 @@
     "tooltip": "Command to force overlay refresh",
   	"group": "General"
   },
-    "is_queue_limited": {
-    "type": "checkbox",
-    "value": false,
-    "label": "Enable queue limit",
-    "tooltip": "Use max levels parameter to limit max levels queued",
-    "group": "General"
-  },
-    "queue_length": {
-    "type": "numberbox",
-    "value": "25",
-    "label": "Max levels on queue",
-    "tooltip": "Max levels number that can exist in queue",
-    "group": "General"
-  },
-    "is_user_limited": {
-    "type": "checkbox",
-    "value": false,
-    "label": "Enable user limit",
-    "tooltip": "Use max levels by user parameter to limit user",
-    "group": "General"
-  },
-    "max_levels_by_user": {
-    "type": "numberbox",
-    "value": "3",
-    "label": "Max levels by user",
-    "tooltip": "Max levels number that can exist in queue",
-    "group": "General"
-  },
     "PermissionBase": {
     "type": "dropdown",
     "value": "Everyone",
     "items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","User_Specific","Min_Rank","Min_Points","Min_Hours","Moderator","Editor","Caster"],
     "label": "Permission level (Basic commands)",
     "tooltip": "Set the permission level for add, list, currentlevel, nextlevel, etc.",
-    "group": "General"
+    "group": "Permissions"
   },
     "PermissionInfoBase": {
     "type": "textbox",
     "value": "",
     "label": "Permission level info (Basic commands)",
     "tooltip": "Set the user, rank or tier for base permission",
-    "group": "General"
+    "group": "Permissions"
   },
     "PermissionAdvanced": {
     "type": "dropdown",
@@ -112,14 +84,14 @@
     "items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","User_Specific","Min_Rank","Min_Points","Min_Hours","Moderator","Editor","Caster"],
     "label": "Permission level (Adv. commands)",
     "tooltip": "Set the permission level for win or skip commands",
-    "group": "General"
+    "group": "Permissions"
   },
     "PermissionInfoAdvanced": {
     "type": "textbox",
     "value": "",
     "label": "Permission level info (Adv. commands)",
     "tooltip": "Set the user, rank or tier for advanced permission",
-    "group": "General"
+    "group": "Permissions"
   },
     "Usage": {
     "type": "dropdown",
@@ -127,79 +99,212 @@
     "items": ["Stream Chat","Stream Whisper","Stream Both","Discord Chat","Discord Whisper","Discord Both","Chat Both","Whisper Both","All"],
     "label": "Usage",
     "tooltip": "Usage for where the script can be used!",
-    "group": "General"
+    "group": "Permissions"
+  },
+    "is_queue_limited": {
+    "type": "checkbox",
+    "value": false,
+    "label": "Enable queue limit",
+    "tooltip": "Use max levels parameter to limit max levels queued",
+    "group": "Limits & Cooldowns"
+  },
+    "queue_length": {
+    "type": "numberbox",
+    "value": "25",
+    "label": "Max levels on queue",
+    "tooltip": "Max levels number that can exist in queue",
+    "group": "Limits & Cooldowns"
+  },
+    "OnQueueLimitReached": {
+    "type": "textbox",
+    "value": "@{0} Level queue is full (Max {1} levels). Wait till a slot is free to add your level",
+    "label": "Queue limit reached response",
+    "tooltip": "The message the bot will display when the queue limit is reached. \r\n {0} = user \r\n {1} = queue length",
+    "group": "Limits & Cooldowns"
+  },
+    "is_user_limited": {
+    "type": "checkbox",
+    "value": false,
+    "label": "Enable user limit",
+    "tooltip": "Use max levels by user parameter to limit user",
+    "group": "Limits & Cooldowns"
+  },
+    "max_levels_by_user": {
+    "type": "numberbox",
+    "value": "3",
+    "label": "Max levels by user",
+    "tooltip": "Max levels number that can exist in queue",
+    "group": "Limits & Cooldowns"
+  },
+    "OnMaxLevelsByUserReached": {
+    "type": "textbox",
+    "value": "@{0} You have reached max levels by user ({1}), wait till one of your levels is completed to add another one",
+    "label": "User Max levels reached response",
+    "tooltip": "The message the bot will display when max levels by user is reached. \r\n {0} = user \r\n {1} = max levels by user",
+    "group": "Limits & Cooldowns"
   },
     "UseCD": {
     "type": "checkbox",
     "value": false,
-  	"label": "Use Cooldown Messages",
-    "tooltip": "Enable/Disable cooldown messages",
-  	"group": "Cooldown"
+  	"label": "Enable Cooldowns",
+    "tooltip": "Enable/Disable cooldown + messages",
+  	"group": "Limits & Cooldowns"
   },
     "Cooldown": {
     "type": "numberbox",
-  	"label": "Cooldown (seconds)",
+  	"label": "Global Cooldown (seconds)",
     "value": 0,
     "tooltip": "Cooldown in seconds.",
-  	"group": "Cooldown"
+  	"group": "Limits & Cooldowns"
   },
     "OnCooldown": {
     "type": "textbox",
     "value": "{0} the command is still on cooldown for {1} seconds!",
-  	"label": "Cooldown Response",
+  	"label": "Global Cooldown Response",
     "tooltip": "The message that the bot will display when the command is on cooldown. \r\n {0} = user \r\n {1} = time remaining",
-  	"group": "Cooldown"
+  	"group": "Limits & Cooldowns"
   },
     "UserCooldown": {
     "type": "numberbox",
   	"label": "User Cooldown (seconds)",
     "value": 10,
     "tooltip": "User cooldown in seconds.",
-  	"group": "Cooldown"
+  	"group": "Limits & Cooldowns"
   },
     "OnUserCooldown": {
     "type": "textbox",
     "value": "{0} the command is still on user cooldown for {1} seconds!",
   	"label": "User Cooldown Response",
     "tooltip": "The message that the bot will display when the command is on user cooldown. \r\n {0} = user \r\n {1} = time remaining",
-  	"group": "Cooldown"
+  	"group": "Limits & Cooldowns"
   },
-  "CasterCD": {
+    "CasterCD": {
     "type": "checkbox",
     "value": true,
   	"label": "Caster ignores cooldown",
     "tooltip": "Enable/Disable cooldown for caster",
-  	"group": "Cooldown"
+  	"group": "Limits & Cooldowns"
   },
-    "NotEnoughResponse": {
+    "RespInfo": {
     "type": "textbox",
-    "value": "{0} you don't have that many {1} to gamble ",
-    "label": "Not enough currency response",
-    "tooltip": "Message sent when user try to gamble more than they have \r\n {0} = user \r\n {1} = Currency name \r\n {2} = command name",
-    "group": "Responses"
-  },
-    "InfoResponse": {
-    "type": "textbox",
-    "value": "!add <código> para añadir un nivel a la lista. !currentlevel, !nextlevel o !list para info",
+    "value": "!add <código> para añadir un nivel a la lista. !level, !nextlevel o !list para info",
     "label": "Info response",
-    "tooltip": "Message sent when user doesn't manage to gamble correctly",
+    "tooltip": "Message sent when the command !add is used without parameters",
     "group": "Responses"
   },
-  "PermissionRespBase": {
+    "RespLevelAdded": {
     "type": "textbox",
-    "value": "$user -> Sólo $permissionbase ($permissioninfobase) o superior pueden usar este comando",
+    "value": "@{0} added level {1} to queue on position [{2}]",
+    "label": "Level added response",
+    "tooltip": "Message sent when user adds a level succesfully. \r\n {0} = user \r\n {1} = level code \r\n {2} = queue position",
+    "group": "Responses"
+  },
+    "RespErrorLevelAdd": {
+    "type": "textbox",
+    "value": "System error adding level to queue, call a mod",
+    "label": "Level add error response",
+    "tooltip": "Message sent when bot fails to add a level to the queue",
+    "group": "Responses"
+  },
+    "RespWrongLevelCodeFormat": {
+    "type": "textbox",
+    "value": "Código de nivel incorrecto, el formato debe coincidir con XXX-YYY-ZZZ, caracteres alfanuméricos sin símbolos ni las letras I, O",
+    "label": "Wrong level code format error response",
+    "tooltip": "Message sent when user inputs a wrong formatted level code",
+    "group": "Responses"
+  },
+    "RespNoLevelsOnQueue": {
+    "type": "textbox",
+    "value": "No levels on queue, add yours using {0}",
+    "label": "No levels on queue response",
+    "tooltip": "Message sent when any command tries to read the queue and it's empty. \r\n {0} = add level command",
+    "group": "Responses"
+  },
+    "RespErrorReadingQueue": {
+    "type": "textbox",
+    "value": "Error reading queue file, call a mod",
+    "label": "Error reading queue file response",
+    "tooltip": "Message sent when bot fails to read queue file",
+    "group": "Responses"
+  },
+    "RespErrorModifyingQueue": {
+    "type": "textbox",
+    "value": "Error updating queue file, call a mod",
+    "label": "Error updating queue file response",
+    "tooltip": "Message sent when bot fails to write queue file",
+    "group": "Responses"
+  },
+    "RespUserLevelPositions": {
+    "type": "textbox",
+    "value": "@{0} you have levels on positions {1}",
+    "label": "User level positions on queue response",
+    "tooltip": "Message sent when user invokes !position command. \r\n {0} = user \r\n {1} = positions",
+    "group": "Responses"
+  },
+    "RespUserLevelPositionsNoLevels": {
+    "type": "textbox",
+    "value": "@{0} you have no levels on queue",
+    "label": "User level positions no levels on queue response",
+    "tooltip": "Message sent when user invokes !position command, but has no levels on queue. \r\n {0} = user",
+    "group": "Responses"
+  },
+    "RespLevelFinishedWin": {
+    "type": "textbox",
+    "value": "Level completed!",
+    "label": "Part of the level finished response",
+    "tooltip": "Win level message. Part of the message sent when mods win or skip levels",
+    "group": "Responses"
+  },
+    "RespLevelFinishedSkip": {
+    "type": "textbox",
+    "value": "Level skipped.",
+    "label": "Part of the level finished response",
+    "tooltip": "Skip level message. Part of the message sent when mods win or skip levels",
+    "group": "Responses"
+  },
+    "RespNextLevel": {
+    "type": "textbox",
+    "value": "Next level is {0}",
+    "label": "Next level response",
+    "tooltip": "Message sent when next level info is required \r\n {0} = next level",
+    "group": "Responses"
+  },
+    "RespNoMoreLevels": {
+    "type": "textbox",
+    "value": "No more levels on queue. Add your level using {0}",
+    "label": "Next level response",
+    "tooltip": "Message sent when next level info is required and there are no more levels \r\n {0} = add command",
+    "group": "Responses"
+  },
+    "RespOverlayUpdated": {
+    "type": "textbox",
+    "value": "Here we go! Levels Overlay updated",
+    "label": "Overlay updated response",
+    "tooltip": "Message sent when a mod succesfully updates the levels overlay",
+    "group": "Responses"
+  },
+    "RespErrorOverlayUpdate": {
+    "type": "textbox",
+    "value": "Error updating overlay. Call a staff member",
+    "label": "Overlay update error response",
+    "tooltip": "Message sent when the bot fails to update the levels overlay",
+    "group": "Responses"
+  },
+    "RespPermissionBase": {
+    "type": "textbox",
+    "value": "$user -> Only $permissionbase ($permissioninfobase) or higher can use this command",
     "label": "Base Permissions denied response",
     "tooltip": "Message sent when user doesn't select any valid wire. \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
     "group": "Responses"
   },
-  "PermissionRespAdvanced": {
+    "RespPermissionAdvanced": {
     "type": "textbox",
-    "value": "$user -> Sólo $permissionadvanced ($permissioninfoadvanced) o superior pueden usar este comando",
+    "value": "$user -> Only $permissionadvanced ($permissioninfoadvanced) or higher can use this command",
     "label": "Advanced Permissions denied response",
     "tooltip": "Message sent when user doesn't select any valid wire. \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
     "group": "Responses"
   },
-  "ControlC": {
+    "ControlC": {
     "type": "button",
     "label": "PLACEHOLDER",
     "tooltip": "Copy the filepath for index.html directly to clipboard for easy insertion in your streaming software",
@@ -210,7 +315,7 @@
     "BtnDefaults": {
     "type": "button",
     "label": "Restore Default Settings",
-    "tooltip": "Reset settings back to defaults.\r\nReload Scripts afterwards to see the changes in the user interface!",
+    "tooltip": "Reset settings back to defaults. \r\n Reload Scripts afterwards to see the changes in the user interface!",
     "function": "SetDefaults",
     "wsevent": "",
     "group": ""

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # pylint: disable=invalid-name
-"""SMM2 Level queue system"""
+"""SMM2 Level Queue System"""
 
 # ---------------------------------------
 # Libraries and references
@@ -16,29 +16,30 @@ import ctypes
 # ---------------------------------------
 # [Required] Script information
 # ---------------------------------------
-ScriptName = "SMM2 Queue"
+ScriptName = "SMM2 Level Queue System"
 Website = "https://twitch.tv/clickandslash"
 Creator = "IsaacRF239 & Gabriel Rodríguez"
 Author1Website = "https://isaacrf.com"
 Author2Website = "https://twitter.com/gabri239"
 Version = "1.1.0"
-Description = "Super Mario Maker 2 level queue system"
+Description = "Super Mario Maker 2 Level Queue System"
 
 # ---------------------------------------
 # TODO List
 # ---------------------------------------
-#TODO: (!) Update Readme.md
-#TODO: (!) Move all messages to variables
+#TODO: Avoid duplicated levels
 #TODO: Make cooldowns work
+#TODO: Fix list format
+#TODO: Reorder and clean config buttons
+#TODO: Update Readme.md and .txt
 #TODO: Allow to open and close the queue
-#TODO: Do something with the levels cut from levels file on win or skip
 
 # ---------------------------------------
 # Versions
 # ---------------------------------------
 """ Major and recent Releases (open README.txt for full release notes)
-1.0.0 - Initial Release
 1.1.0 - Adds a levels overlay
+1.0.0 - Initial Release
 """
 
 # ---------------------------------------
@@ -77,25 +78,40 @@ class Settings:
             self.command_win_level = "!winlevel"
             self.command_skip_level = "!skiplevel"
             self.command_refresh_overlay = "!refreshlevels"
-            self.is_queue_limited = False
-            self.queue_length = 25
-            self.is_user_limited = False
-            self.max_levels_by_user = 3
             self.PermissionBase = "Everyone"
             self.PermissionInfoBase = ""
             self.PermissionAdvanced = "Moderator"
             self.PermissionInfoAdvanced = ""
             self.Usage = "Stream Chat"
+            self.is_queue_limited = False
+            self.queue_length = 25
+            self.OnQueueLimitReached = "@{0} Level queue is full (Max {1} levels). Wait till a slot is free to add your level"
+            self.is_user_limited = False
+            self.max_levels_by_user = 3
+            self.OnMaxLevelsByUserReached = "@{0} You have reached max levels by user ({1}), wait till one of your levels is completed to add another one"
             self.UseCD = True
             self.Cooldown = 5
             self.OnCooldown = "{0} the command is still on cooldown for {1} seconds!"
             self.UserCooldown = 10
             self.OnUserCooldown = "{0} the command is still on user cooldown for {1} seconds!"
             self.CasterCD = True
-            self.NotEnoughResponse = "{0} you don't have that many {1} to gamble! "
-            self.InfoResponse = "!add <código> para añadir un nivel a la lista. !currentlevel, !nextlevel o !list para info"
-            self.PermissionRespBase= "$user -> Sólo $permissionbase ($permissioninfobase) o superior pueden usar este comando"
-            self.PermissionRespAdvanced= "$user -> Sólo $permissionadvanced ($permissioninfoadvanced) o superior pueden usar este comando"
+            self.RespInfo = "!add <código> para añadir un nivel a la lista. !level, !nextlevel o !list para info"
+            self.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
+            self.RespErrorLevelAdd = "System error adding level to queue, call a mod"
+            self.RespWrongLevelCodeFormat = "Código de nivel incorrecto, el formato debe coincidir con XXX-YYY-ZZZ, caracteres alfanuméricos sin símbolos ni las letras I, O"
+            self.RespNoLevelsOnQueue = "No levels on queue, add yours using {0}"
+            self.RespErrorReadingQueue = "Error reading queue file, call a mod"
+            self.RespErrorModifyingQueue = "Error updating queue file, call a mod"
+            self.RespUserLevelPositions = "@{0} you have levels on positions {1}"
+            self.RespUserLevelPositionsNoLevels = "@{0} you have no levels on queue"
+            self.RespLevelFinishedWin = "Level completed!"
+            self.RespLevelFinishedSkip = "Level skipped."
+            self.RespNextLevel = "Next level is {0}"
+            self.RespNoMoreLevels = "No more levels on queue. Add your level using {0}"
+            self.RespOverlayUpdated = "Here we go! Levels Overlay updated"
+            self.RespErrorOverlayUpdate = "Error updating overlay. Call a staff member"
+            self.RespPermissionBase= "$user -> Only $permissionbase ($permissioninfobase) or higher can use this command"
+            self.RespPermissionAdvanced= "$user -> Only $permissionadvanced ($permissioninfoadvanced) or higher can use this command"
 
         #Create levels file if it doesn't exist on initialization
         if not os.path.exists(levelsFile):
@@ -291,14 +307,14 @@ def HasPermission(data):
     data.GetParam(0).lower() == MySet.command_current_level.lower() or
     data.GetParam(0).lower() == MySet.command_next_level.lower()):
         if not Parent.HasPermission(data.User, MySet.PermissionBase, MySet.PermissionInfoBase):
-            message = MySet.PermissionRespBase.format(data.UserName, MySet.PermissionBase, MySet.PermissionInfoBase)
+            message = MySet.RespPermissionBase.format(data.UserName, MySet.PermissionBase, MySet.PermissionInfoBase)
             SendResp(data, MySet.Usage, message)
             return False
     elif (data.GetParam(0).lower() == MySet.command_win_level.lower() or
     data.GetParam(0).lower() == MySet.command_skip_level.lower() or
     data.GetParam(0).lower() == MySet.command_refresh_overlay.lower()):
         if not Parent.HasPermission(data.User, MySet.PermissionAdvanced, MySet.PermissionInfoAdvanced):
-            message = MySet.PermissionRespAdvanced.format(data.UserName, MySet.PermissionAdvanced, MySet.PermissionInfoAdvanced)
+            message = MySet.RespPermissionAdvanced.format(data.UserName, MySet.PermissionAdvanced, MySet.PermissionInfoAdvanced)
             SendResp(data, MySet.Usage, message)
             return False
 
@@ -308,21 +324,25 @@ def HasPermission(data):
 # [Script] functions
 # ---------------------------------------
 def AddLevel(code, data):
+    levelsNumber = CountLevels()
+
     if code == "":
-        SendResp(data, MySet.Usage, MySet.InfoResponse)
+        SendResp(data, MySet.Usage, MySet.RespInfo)
         return
 
-    if MySet.is_queue_limited and CountLevels() >= MySet.queue_length:
-        SendResp(data, MySet.Usage, "La cola está llena, espera a que se libere un hueco para añadir tu nivel")
+    if MySet.is_queue_limited and levelsNumber >= MySet.queue_length:
+        message = MySet.OnQueueLimitReached.format(data.UserName, MySet.queue_length)
+        SendResp(data, MySet.Usage, message)
         return
 
     if MySet.is_user_limited and CountLevelsByUser(data.UserName) >= MySet.max_levels_by_user:
-        SendResp(data, MySet.Usage, "Has alcanzado el máximo de niveles por persona (" + str(MySet.max_levels_by_user) + "), espera a que se complete alguno de tus niveles")
+        message = MySet.OnMaxLevelsByUserReached.format(data.UserName, str(MySet.max_levels_by_user))
+        SendResp(data, MySet.Usage, message)
         return
 
     if levelCodePattern.match(code):
         try:
-            isUIUpdateRequired = (CountLevels() <= 1)
+            isUIUpdateRequired = (levelsNumber <= 1)
 
             with open(levelsFile, 'a') as file:
                 file.write(code + " [@" + data.UserName + "]" + '\n')
@@ -345,15 +365,17 @@ def AddLevel(code, data):
                     overlayInfo = OverlayInfo(currentLevel, nextLevel, wins, skips)
                     Parent.BroadcastWsEvent(eventLevelUpdate, json.dumps(overlayInfo.__dict__))
 
-            SendResp(data, MySet.Usage, "@" + data.UserName + " ha añadido el nivel " + code + " a la cola en posición [" + str(CountLevels()) + "]")
+            message = MySet.RespLevelAdded.format(data.UserName, code, str(levelsNumber + 1))
+            SendResp(data, MySet.Usage, message)
         except:
-            SendResp(data, MySet.Usage, "Ha ocurrido un error al intentar agregar el nivel a la cola, avisa a un mod")
+            SendResp(data, MySet.Usage, MySet.RespErrorLevelAdd)
     else:
-        SendResp(data, MySet.Usage, "Código de nivel incorrecto, el formato debe coincidir con XXX-YYY-ZZZ, caracteres alfanuméricos sin símbolos ni las letras I, O")
+        SendResp(data, MySet.Usage, MySet.RespWrongLevelCodeFormat)
 
 def ListLevels(data):
     if CountLevels() <= 0:
-        SendResp(data, MySet.Usage, "No hay niveles en cola, añade el tuyo con " + MySet.command_add)
+        message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
+        SendResp(data, MySet.Usage, message)
         return
 
     header = twitchLineBreak + twitchLineHeader
@@ -368,7 +390,7 @@ def ListLevels(data):
 
         SendResp(data, MySet.Usage, header + body)
     except:
-        SendResp(data, MySet.Usage, "Error al intentar leer la lista de niveles, avisa a un mod")
+        SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
 def GetPositions(data):
     positions = ""
@@ -378,7 +400,8 @@ def GetPositions(data):
             levels = f.readlines()
 
         if len(levels) <= 0:
-            SendResp(data, MySet.Usage, "No hay niveles en cola, añade el tuyo con " + MySet.command_add)
+            message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
+            SendResp(data, MySet.Usage, message)
             return
 
         for i, level in enumerate(levels):
@@ -386,11 +409,13 @@ def GetPositions(data):
                 positions += " [" + str(i + 1) + "]"
 
         if positions != "":
-            SendResp(data, MySet.Usage, "@" + data.UserName + " tienes niveles en las posiciones" + positions)
+            message = MySet.RespUserLevelPositions.format(data.UserName, positions)
+            SendResp(data, MySet.Usage, message)
         else:
-            SendResp(data, MySet.Usage, "@" + data.UserName + " no tienes niveles en cola")
+            message = MySet.RespUserLevelPositionsNoLevels.format(data.UserName)
+            SendResp(data, MySet.Usage, message)
     except:
-        SendResp(data, MySet.Usage, "Error al intentar leer la lista de niveles, avisa a un mod")
+        SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
 def CountLevels():
     try:
@@ -425,11 +450,12 @@ def CurrentLevel(data):
             level = f.readline().strip()
 
         if level == "":
-            SendResp(data, MySet.Usage, "No hay niveles en cola, añade el tuyo con " + MySet.command_add)
+            message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
+            SendResp(data, MySet.Usage, message)
         else:
             SendResp(data, MySet.Usage, level)
     except:
-        SendResp(data, MySet.Usage, "Error al intentar leer la lista de niveles, avisa a un mod")
+        SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
 def NextLevel(data):
     try:
@@ -440,28 +466,24 @@ def NextLevel(data):
                 if level != "":
                     SendResp(data, MySet.Usage, level)
                 else:
-                    SendResp(data, MySet.Usage, "No hay más niveles en cola, añade el tuyo con " + MySet.command_add)
+                    message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
+                    SendResp(data, MySet.Usage, message)
             else:
-                SendResp(data, MySet.Usage, "No hay más niveles en cola, añade el tuyo con " + MySet.command_add)
+                message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
+                SendResp(data, MySet.Usage, message)
     except:
-        SendResp(data, MySet.Usage, "Error al intentar leer la lista de niveles, avisa a un mod")
+        SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
 def FinishLevel(data, result):
     global wins
     global skips
 
-    if result == 0:
-        message = "¡Nivel superado!"
-        wins = wins + 1
-    else:
-        message = "Nivel skipeado."
-        skips = skips + 1
-
     try:
         with open(levelsFile, 'r') as f: #open in read / write mode
             levels = f.readlines()
             if len(levels) <= 0:
-                SendResp(data, MySet.Usage, "No hay ningún nivel en juego")
+                message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
+                SendResp(data, MySet.Usage, message)
                 return
 
         with open(levelsFile, 'w') as f:
@@ -478,24 +500,35 @@ def FinishLevel(data, result):
             else:
                 nextLevel = ""
 
-            #SEND BOT RESPONSE
-            if currentLevel != "":
-                SendResp(data, MySet.Usage, message + " El siguiente nivel es " + currentLevel)
+            #CRAFT RESPONSE
+            if result == 0:
+                message = MySet.RespLevelFinishedWin
+                wins = wins + 1
             else:
-                SendResp(data, MySet.Usage, message + " No hay más niveles en cola, añade el tuyo con " + MySet.command_add)
+                message = MySet.RespLevelFinishedSkip
+                skips = skips + 1
+
+            if currentLevel != "":
+                message = message + " " + MySet.RespNextLevel.format(currentLevel)
+            else:
+                message = message + " " + MySet.RespNoMoreLevels.format(MySet.command_add)
+
+            #SEND BOT RESPONSE
+            SendResp(data, MySet.Usage, message)
 
             #UPDATE OVERLAY INFO
             overlayInfo = OverlayInfo(currentLevel, nextLevel, wins, skips)
             Parent.BroadcastWsEvent(eventLevelUpdate, json.dumps(overlayInfo.__dict__))
     except:
-        SendResp(data, MySet.Usage, "Error al intentar modificar la lista de niveles, dale un golpe al bot")
+        SendResp(data, MySet.Usage, MySet.RespErrorModifyingQueue)
 
 def RefreshOverlay(data):
     global wins
     global skips
 
     if CountLevels() <= 0:
-        SendResp(data, MySet.Usage, "No hay niveles en cola actualmente. Se pueden añadir usando !add")
+        message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
+        SendResp(data, MySet.Usage, message)
     else:
         try:
             with open(levelsFile, 'r') as f:
@@ -514,9 +547,9 @@ def RefreshOverlay(data):
             overlayInfo = OverlayInfo(currentLevel, nextLevel, wins, skips)
             Parent.BroadcastWsEvent(eventLevelUpdate, json.dumps(overlayInfo.__dict__))
 
-            SendResp(data, MySet.Usage, "Here we go! Overlay de niveles actualizado")
+            SendResp(data, MySet.Usage, MySet.RespOverlayUpdated)
         except:
-            SendResp(data, MySet.Usage, "Ha ocurrido un error al actualizar el overlay. Dale un toque al staff")
+            SendResp(data, MySet.Usage, MySet.RespErrorOverlayUpdate)
 
 # ---------------------------------------
 # [Required] functions
