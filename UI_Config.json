@@ -304,11 +304,19 @@
     "tooltip": "Message sent when user doesn't select any valid wire. \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
     "group": "Responses"
   },
-    "ControlC": {
+    "CopyOverlayIndexPath": {
     "type": "button",
-    "label": "PLACEHOLDER",
+    "label": "Copy overlay index path",
     "tooltip": "Copy the filepath for index.html directly to clipboard for easy insertion in your streaming software",
-    "function": "ControlC",
+    "function": "CopyOverlayIndexPath",
+    "wsevent": "",
+    "group": ""
+  },
+    "openReadMe": {
+    "type": "button",
+    "label": "Open README.txt",
+    "tooltip": "Opens the README.txt for this script",
+    "function": "OpenReadMe",
     "wsevent": "",
     "group": ""
   },
@@ -317,14 +325,6 @@
     "label": "Restore Default Settings",
     "tooltip": "Reset settings back to defaults. \r\n Reload Scripts afterwards to see the changes in the user interface!",
     "function": "SetDefaults",
-    "wsevent": "",
-    "group": ""
-	},
-    "openReadMe": {
-    "type": "button",
-    "label": "Open README.txt",
-    "tooltip": "Opens the README.txt for this script",
-    "function": "OpenReadMe",
     "wsevent": "",
     "group": ""
   }

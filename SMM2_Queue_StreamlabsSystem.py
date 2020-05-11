@@ -30,7 +30,6 @@ Description = "Super Mario Maker 2 Level Queue System"
 #TODO: Avoid duplicated levels
 #TODO: Make cooldowns work
 #TODO: Fix list format
-#TODO: Reorder and clean config buttons
 #TODO: Update Readme.md and .txt
 #TODO: Allow to open and close the queue
 
@@ -47,6 +46,7 @@ Description = "Super Mario Maker 2 Level Queue System"
 # ---------------------------------------
 settingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 levelsFile = os.path.join(os.path.dirname(__file__), "levels.txt")
+overlayIndexPath = os.path.join(os.path.abspath(os.path.dirname(__file__)), "overlay", "index.html")
 MessageBox = ctypes.windll.user32.MessageBoxW
 MB_YES = 6
 eventLevelUpdate = "EVENT_SMM2QS_LEVEL_UPDATE"
@@ -174,10 +174,10 @@ def SetDefaults():
     returnValue = MessageBox(0, u"You are about to reset the settings, "
                                 "are you sure you want to contine?", u"Reset settings file?", 4)
     if returnValue == MB_YES:
-        returnValue = MessageBox(
-            0, u"Settings successfully restored to default values", u"Reset complete!", 0)
         global MySet
         Settings.Save(MySet, settingsFile)
+        returnValue = MessageBox(
+            0, u"Settings successfully restored to default values", u"Reset complete!", 0)
 
 
 def ReloadSettings(jsondata):
@@ -244,25 +244,10 @@ def IsFromValidSource(data, Usage):
     return False
 
 
-def ControlC():
+def CopyOverlayIndexPath():
     """Copy index.html filepath to clipboard"""
-    """    winsound.MessageBeep()
-        returnValue = MessageBox(0, u"You are about copy the index.html filepath "
-                                    "to your clipboard, this will overwrite any "
-                                    "information you have there now. "
-                                    "Are you sure you want to contine?"
-                                , u"Copy to clipboard", 4)
-        if returnValue == 6:
-            indexPath = os.path.dirname(os.path.abspath(__file__)) + "\\index.html"
-            command = 'echo ' + indexPath.strip() + '| clip'
-            os.system(command)
-    """
-    winsound.MessageBeep()
-    returnValue = MessageBox(
-        0, u"This is just a placeholder.\r\nWanna open another box?", u"Open another window?", 4)
-    if returnValue == 6:
-        returnValue = MessageBox(
-            0, u"Here's your box, now you gotta be happy!", u"Happy now?", 0)
+    command = 'echo ' + overlayIndexPath.strip() + '| clip'
+    os.system(command)
 
 
 def AddCooldown(data):

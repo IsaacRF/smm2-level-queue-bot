@@ -40,7 +40,7 @@
   "RespNextLevel": "El siguiente nivel es {0}",
   "RespNoMoreLevels": "No hay más niveles en cola, añade el tuyo con {0}",
   "RespErrorLevelAdd": "System error adding level to queue, call a mod",
-  "RespErrorModifyingQueue": "Error updating queue file, call a mod",
+  "RespErrorModifyingQueue": "Error al intentar actualizar la lista de niveles, avisa a un mod",
   "RespOverlayUpdated": "Here we go! Overlay de niveles actualizado",
   "RespErrorOverlayUpdate": "Error actualizando el overlay de niveles. Dale un toque a alguien del staff"
 }
