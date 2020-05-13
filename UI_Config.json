@@ -40,28 +40,35 @@
     "value": "!nextlevel",
   	"label": "Command Name (Next level)",
     "tooltip": "Command to show next level in queue, if any",
-  	"group": "General"
+  	"group": "Advanced Permission Commands"
   },
     "command_win_level": {
     "type": "textbox",
     "value": "!winlevel",
   	"label": "Command Name (Win level)",
     "tooltip": "Command to jump to next level adding a win to the counter",
-  	"group": "General"
+  	"group": "Advanced Permission Commands"
   },
     "command_skip_level": {
     "type": "textbox",
     "value": "!skiplevel",
   	"label": "Command Name (Skip level)",
     "tooltip": "Command to jump to next level adding a skip to counter",
-  	"group": "General"
+  	"group": "Advanced Permission Commands"
+  },
+    "command_delete_level": {
+    "type": "textbox",
+    "value": "!deletelevel",
+  	"label": "Command Name (Delete level)",
+    "tooltip": "Command to jump to next level without modifying scores",
+  	"group": "Advanced Permission Commands"
   },
     "command_refresh_overlay": {
     "type": "textbox",
     "value": "!refreshlevels",
   	"label": "Command Name (Refresh Overlay)",
     "tooltip": "Command to force overlay refresh",
-  	"group": "General"
+  	"group": "Advanced Permission Commands"
   },
     "PermissionBase": {
     "type": "dropdown",
@@ -150,39 +157,151 @@
     "tooltip": "Enable/Disable cooldown + messages",
   	"group": "Limits & Cooldowns"
   },
-    "Cooldown": {
+    "CasterCD": {
+    "type": "checkbox",
+    "value": true,
+    "label": "Caster ignores cooldown",
+    "tooltip": "Enable/Disable cooldown for caster",
+    "group": "Limits & Cooldowns"
+  },
+    "CooldownAdd": {
     "type": "numberbox",
-  	"label": "Global Cooldown (seconds)",
+  	"label": "Add Global Cooldown (seconds)",
     "value": 0,
-    "tooltip": "Cooldown in seconds.",
+    "tooltip": "Cooldown in seconds for Add level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownAdd": {
+    "type": "numberbox",
+  	"label": "Add User Cooldown (seconds)",
+    "value": 3,
+    "tooltip": "User cooldown in seconds for Add level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "CooldownList": {
+    "type": "numberbox",
+  	"label": "List Global Cooldown (seconds)",
+    "value": 10,
+    "tooltip": "Cooldown in seconds for List command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownList": {
+    "type": "numberbox",
+  	"label": "List User Cooldown (seconds)",
+    "value": 10,
+    "tooltip": "User cooldown in seconds for List command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "CooldownPosition": {
+    "type": "numberbox",
+  	"label": "Position Global Cooldown (seconds)",
+    "value": 0,
+    "tooltip": "Cooldown in seconds for Position command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownPosition": {
+    "type": "numberbox",
+  	"label": "Position User Cooldown (seconds)",
+    "value": 10,
+    "tooltip": "User cooldown in seconds for Position command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "CooldownCurrentLevel": {
+    "type": "numberbox",
+  	"label": "Current Level Global Cooldown (seconds)",
+    "value": 3,
+    "tooltip": "Cooldown in seconds for Current Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownCurrentLevel": {
+    "type": "numberbox",
+  	"label": "Current Level User Cooldown (seconds)",
+    "value": 3,
+    "tooltip": "User cooldown in seconds for Current Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "CooldownNextLevel": {
+    "type": "numberbox",
+  	"label": "Next Level Global Cooldown (seconds)",
+    "value": 3,
+    "tooltip": "Cooldown in seconds for Next Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownNextLevel": {
+    "type": "numberbox",
+  	"label": "Next Level User Cooldown (seconds)",
+    "value": 3,
+    "tooltip": "User cooldown in seconds for Next Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "CooldownWinLevel": {
+    "type": "numberbox",
+  	"label": "Win Level Global Cooldown (seconds)",
+    "value": 2,
+    "tooltip": "Cooldown in seconds for Win Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownWinLevel": {
+    "type": "numberbox",
+  	"label": "Win Level User Cooldown (seconds)",
+    "value": 2,
+    "tooltip": "User cooldown in seconds for Win Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "CooldownSkipLevel": {
+    "type": "numberbox",
+  	"label": "Skip Level Global Cooldown (seconds)",
+    "value": 2,
+    "tooltip": "Cooldown in seconds for Skip Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownSkipLevel": {
+    "type": "numberbox",
+  	"label": "Skip Level User Cooldown (seconds)",
+    "value": 2,
+    "tooltip": "User cooldown in seconds for Skip Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "CooldownDeleteLevel": {
+    "type": "numberbox",
+  	"label": "Delete Level Global Cooldown (seconds)",
+    "value": 2,
+    "tooltip": "Cooldown in seconds for Delete Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownDeleteLevel": {
+    "type": "numberbox",
+  	"label": "Delete Level User Cooldown (seconds)",
+    "value": 2,
+    "tooltip": "User cooldown in seconds for Delete Level command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "CooldownRefreshOverlay": {
+    "type": "numberbox",
+  	"label": "Refresh Overlay Global Cooldown (seconds)",
+    "value": 2,
+    "tooltip": "Cooldown in seconds for Refresh Overlay command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownRefreshOverlay": {
+    "type": "numberbox",
+  	"label": "Refresh Overlay User Cooldown (seconds)",
+    "value": 2,
+    "tooltip": "User cooldown in seconds for Refresh Overlay command.",
   	"group": "Limits & Cooldowns"
   },
     "OnCooldown": {
     "type": "textbox",
-    "value": "{0} the command is still on cooldown for {1} seconds!",
-  	"label": "Global Cooldown Response",
-    "tooltip": "The message that the bot will display when the command is on cooldown. \r\n {0} = user \r\n {1} = time remaining",
-  	"group": "Limits & Cooldowns"
-  },
-    "UserCooldown": {
-    "type": "numberbox",
-  	"label": "User Cooldown (seconds)",
-    "value": 10,
-    "tooltip": "User cooldown in seconds.",
-  	"group": "Limits & Cooldowns"
+    "value": "@{0} the command {1} is still on cooldown for {2} seconds!",
+    "label": "Global Cooldown Response",
+    "tooltip": "The message that the bot will display when the command is on cooldown. \r\n {0} = user \r\n {1} = command \r\n {2} = remaining seconds",
+    "group": "Limits & Cooldowns"
   },
     "OnUserCooldown": {
     "type": "textbox",
-    "value": "{0} the command is still on user cooldown for {1} seconds!",
+    "value": "@{0} the command {1} is still on user cooldown for {2} seconds!",
   	"label": "User Cooldown Response",
     "tooltip": "The message that the bot will display when the command is on user cooldown. \r\n {0} = user \r\n {1} = time remaining",
-  	"group": "Limits & Cooldowns"
-  },
-    "CasterCD": {
-    "type": "checkbox",
-    "value": true,
-  	"label": "Caster ignores cooldown",
-    "tooltip": "Enable/Disable cooldown for caster",
   	"group": "Limits & Cooldowns"
   },
     "RespInfo": {
@@ -260,6 +379,13 @@
     "value": "Level skipped.",
     "label": "Part of the level finished response",
     "tooltip": "Skip level message. Part of the message sent when mods win or skip levels",
+    "group": "Responses"
+  },
+    "RespLevelFinishedDelete": {
+    "type": "textbox",
+    "value": "Level deleted.",
+    "label": "Part of the level finished response",
+    "tooltip": "Delete level message. Part of the message sent when mods delete levels from list",
     "group": "Responses"
   },
     "RespNextLevel": {

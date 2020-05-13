@@ -28,7 +28,6 @@ Description = "Super Mario Maker 2 Level Queue System"
 # TODO List
 # ---------------------------------------
 #TODO: Avoid duplicated levels
-#TODO: Make cooldowns work
 #TODO: Fix list format
 #TODO: Update Readme.md and .txt
 #TODO: Allow to open and close the queue
@@ -77,6 +76,7 @@ class Settings:
             self.command_next_level = "!nextlevel"
             self.command_win_level = "!winlevel"
             self.command_skip_level = "!skiplevel"
+            self.command_delete_level = "!deletelevel"
             self.command_refresh_overlay = "!refreshlevels"
             self.PermissionBase = "Everyone"
             self.PermissionInfoBase = ""
@@ -90,11 +90,27 @@ class Settings:
             self.max_levels_by_user = 3
             self.OnMaxLevelsByUserReached = "@{0} You have reached max levels by user ({1}), wait till one of your levels is completed to add another one"
             self.UseCD = True
-            self.Cooldown = 5
-            self.OnCooldown = "{0} the command is still on cooldown for {1} seconds!"
-            self.UserCooldown = 10
-            self.OnUserCooldown = "{0} the command is still on user cooldown for {1} seconds!"
             self.CasterCD = True
+            self.CooldownAdd = 0
+            self.UserCooldownAdd = 3
+            self.CooldownList = 10
+            self.UserCooldownList = 10
+            self.CooldownPosition = 0
+            self.UserCooldownPosition = 10
+            self.CooldownCurrentLevel = 3
+            self.UserCooldownCurrentLevel = 3
+            self.CooldownNextLevel = 3
+            self.UserCooldownNextLevel = 3
+            self.CooldownWinLevel = 2
+            self.UserCooldownWinLevel = 2
+            self.CooldownSkipLevel = 2
+            self.UserCooldownSkipLevel = 2
+            self.CooldownDeleteLevel = 2
+            self.UserCooldownDeleteLevel = 2
+            self.CooldownRefreshOverlay = 2
+            self.UserCooldownRefreshOverlay = 2
+            self.OnCooldown = "@{0} the command {1} is still on cooldown for {2} seconds!"
+            self.OnUserCooldown = "@{0} the command {1} is still on user cooldown for {2} seconds!"
             self.RespInfo = "!add <código> para añadir un nivel a la lista. !level, !nextlevel o !list para info"
             self.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
             self.RespErrorLevelAdd = "System error adding level to queue, call a mod"
@@ -106,6 +122,7 @@ class Settings:
             self.RespUserLevelPositionsNoLevels = "@{0} you have no levels on queue"
             self.RespLevelFinishedWin = "Level completed!"
             self.RespLevelFinishedSkip = "Level skipped."
+            self.RespLevelFinishedDelete = "Level deleted."
             self.RespNextLevel = "Next level is {0}"
             self.RespNoMoreLevels = "No more levels on queue. Add your level using {0}"
             self.RespOverlayUpdated = "Here we go! Levels Overlay updated"
@@ -250,36 +267,33 @@ def CopyOverlayIndexPath():
     os.system(command)
 
 
-def AddCooldown(data):
+def AddCooldown(command, user, userCooldown, globalCooldown):
     """add cooldowns"""
-    if Parent.HasPermission(data.User, "Caster", "") and MySet.CasterCD:
-        Parent.AddCooldown(ScriptName, MySet.Command, MySet.Cooldown)
-        return
+    isCaster = Parent.HasPermission(user, "Caster", "")
 
-    else:
-        Parent.AddUserCooldown(ScriptName, MySet.Command,
-                               data.User, MySet.UserCooldown)
-        Parent.AddCooldown(ScriptName, MySet.Command, MySet.Cooldown)
+    Parent.AddCooldown(ScriptName, command, globalCooldown)
+    if not isCaster or (isCaster and not MySet.CasterCD):
+        Parent.AddUserCooldown(ScriptName, command, user, userCooldown)
 
 
 def IsOnCooldown(data):
     """Return true if command is on cooldown and send cooldown message if enabled"""
-    cooldown = Parent.IsOnCooldown(ScriptName, MySet.Command)
-    userCooldown = Parent.IsOnUserCooldown(ScriptName, MySet.Command, data.User)
-    caster = (Parent.HasPermission(data.User, "Caster", "") and MySet.CasterCD)
+    isOnCooldown = Parent.IsOnCooldown(ScriptName, data.GetParam(0).lower())
+    isOnUserCooldown = Parent.IsOnUserCooldown(ScriptName, data.GetParam(0).lower(), data.User)
+    isCaster = (Parent.HasPermission(data.User, "Caster", "") and MySet.CasterCD)
 
-    if (cooldown or userCooldown) and caster is False:
+    if (isOnCooldown or isOnUserCooldown) and not isCaster:
         if MySet.UseCD:
-            cooldownDuration = Parent.GetCooldownDuration(ScriptName, MySet.Command)
-            userCDD = Parent.GetUserCooldownDuration(ScriptName, MySet.Command, data.User)
+            cooldownDuration = Parent.GetCooldownDuration(ScriptName, data.GetParam(0).lower())
+            userCDD = Parent.GetUserCooldownDuration(ScriptName, data.GetParam(0).lower(), data.User)
 
             if cooldownDuration > userCDD:
                 m_CooldownRemaining = cooldownDuration
-                message = MySet.OnCooldown.format(data.UserName, m_CooldownRemaining)
+                message = MySet.OnCooldown.format(data.UserName, data.GetParam(0).lower(), m_CooldownRemaining)
                 SendResp(data, MySet.Usage, message)
             else:
                 m_CooldownRemaining = userCDD
-                message = MySet.OnUserCooldown.format(data.UserName, m_CooldownRemaining)
+                message = MySet.OnUserCooldown.format(data.UserName, data.GetParam(0).lower(), m_CooldownRemaining)
                 SendResp(data, MySet.Usage, message)
         return True
     return False
@@ -297,6 +311,7 @@ def HasPermission(data):
             return False
     elif (data.GetParam(0).lower() == MySet.command_win_level.lower() or
     data.GetParam(0).lower() == MySet.command_skip_level.lower() or
+    data.GetParam(0).lower() == MySet.command_delete_level.lower() or
     data.GetParam(0).lower() == MySet.command_refresh_overlay.lower()):
         if not Parent.HasPermission(data.User, MySet.PermissionAdvanced, MySet.PermissionInfoAdvanced):
             message = MySet.RespPermissionAdvanced.format(data.UserName, MySet.PermissionAdvanced, MySet.PermissionInfoAdvanced)
@@ -309,6 +324,13 @@ def HasPermission(data):
 # [Script] functions
 # ---------------------------------------
 def AddLevel(code, data):
+    """Adds a level to queue file and updates overlay if 1 or less levels are in queue
+
+    Parameters:
+    code (string): Level code in XXX-YYY-ZZZ format
+    data: Command execution info
+    """
+
     levelsNumber = CountLevels()
 
     if code == "":
@@ -358,6 +380,7 @@ def AddLevel(code, data):
         SendResp(data, MySet.Usage, MySet.RespWrongLevelCodeFormat)
 
 def ListLevels(data):
+    """List levels on queue"""
     if CountLevels() <= 0:
         message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
         SendResp(data, MySet.Usage, message)
@@ -378,6 +401,7 @@ def ListLevels(data):
         SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
 def GetPositions(data):
+    """List positions in which user has levels on"""
     positions = ""
 
     try:
@@ -403,6 +427,12 @@ def GetPositions(data):
         SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
 def CountLevels():
+    """Count levels on queue
+
+    Returns:
+    int: Number of levels on queue
+    """
+
     try:
         with open(levelsFile, 'r') as f:
             levels = f.readlines()
@@ -412,6 +442,15 @@ def CountLevels():
         return 0
 
 def CountLevelsByUser(userName):
+    """Count levels on queue added by specified user
+
+    Parameters:
+    userName (string): User name
+
+    Returns:
+    int: Number of levels on queue by user
+    """
+
     count = 0
 
     try:
@@ -430,6 +469,7 @@ def CountLevelsByUser(userName):
         return 0
 
 def CurrentLevel(data):
+    """Shows first level on queue"""
     try:
         with open(levelsFile, 'r') as f:
             level = f.readline().strip()
@@ -443,6 +483,7 @@ def CurrentLevel(data):
         SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
 def NextLevel(data):
+    """Shows next level on queue"""
     try:
         with open(levelsFile, 'r') as f:
             levels = f.readlines()
@@ -459,7 +500,14 @@ def NextLevel(data):
     except:
         SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
-def FinishLevel(data, result):
+def FinishLevel(data, result=0):
+    """Removes first level from queue and updates score if needed
+
+    Parameters:
+    data: Command execution info
+    result (int): 0 = Win, 1 = Skip, 2 = Delete / No score update (default 0)
+    """
+
     global wins
     global skips
 
@@ -485,13 +533,15 @@ def FinishLevel(data, result):
             else:
                 nextLevel = ""
 
-            #CRAFT RESPONSE
+            #CRAFT RESPONSE AND UPDATE SCORE
             if result == 0:
                 message = MySet.RespLevelFinishedWin
                 wins = wins + 1
-            else:
+            elif result == 1:
                 message = MySet.RespLevelFinishedSkip
                 skips = skips + 1
+            else:
+                message = MySet.RespLevelFinishedDelete
 
             if currentLevel != "":
                 message = message + " " + MySet.RespNextLevel.format(currentLevel)
@@ -508,6 +558,7 @@ def FinishLevel(data, result):
         SendResp(data, MySet.Usage, MySet.RespErrorModifyingQueue)
 
 def RefreshOverlay(data):
+    """Refreshes bot overlay"""
     global wins
     global skips
 
@@ -566,33 +617,45 @@ def Execute(data):
         return
 
     if data.IsChatMessage() and not MySet.OnlyLive or Parent.IsLive():
-        #if IsOnCooldown(data):
-        #    return
+        if IsOnCooldown(data):
+            return
 
         if data.GetParam(0).lower() == MySet.command_add.lower():
-            levelCode = data.Message.replace(data.GetParam(0),'').strip().replace(' ','-').upper();
+            levelCode = data.Message.replace(data.GetParam(0),'').strip().replace(' ','-').upper()
             AddLevel(levelCode, data)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownAdd, MySet.CooldownAdd)
             return
         elif data.GetParam(0).lower() == MySet.command_list.lower():
             ListLevels(data)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownList, MySet.CooldownList)
             return
         elif data.GetParam(0).lower() == MySet.command_position.lower():
             GetPositions(data)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownPosition, MySet.CooldownPosition)
             return
         elif data.GetParam(0).lower() == MySet.command_current_level.lower():
             CurrentLevel(data)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownCurrentLevel, MySet.CooldownCurrentLevel)
             return
         elif data.GetParam(0).lower() == MySet.command_next_level.lower():
             NextLevel(data)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownNextLevel, MySet.CooldownNextLevel)
             return
         elif data.GetParam(0).lower() == MySet.command_win_level.lower():
             FinishLevel(data, 0)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownWinLevel, MySet.CooldownWinLevel)
             return
         elif data.GetParam(0).lower() == MySet.command_skip_level.lower():
             FinishLevel(data, 1)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownSkipLevel, MySet.CooldownSkipLevel)
+            return
+        elif data.GetParam(0).lower() == MySet.command_delete_level.lower():
+            FinishLevel(data, 2)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownDeleteLevel, MySet.CooldownDeleteLevel)
             return
         elif data.GetParam(0).lower() == MySet.command_refresh_overlay.lower():
             RefreshOverlay(data)
+            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownRefreshOverlay, MySet.CooldownRefreshOverlay)
             return
 
 
