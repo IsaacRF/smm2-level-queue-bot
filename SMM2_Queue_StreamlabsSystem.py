@@ -27,7 +27,6 @@ Description = "Super Mario Maker 2 Level Queue System"
 # ---------------------------------------
 # TODO List
 # ---------------------------------------
-#TODO: Avoid duplicated levels
 #TODO: Fix list format
 #TODO: Update Readme.md and .txt
 #TODO: Allow to open and close the queue
@@ -83,6 +82,8 @@ class Settings:
             self.PermissionAdvanced = "Moderator"
             self.PermissionInfoAdvanced = ""
             self.Usage = "Stream Chat"
+            self.omit_duplicated_levels = True
+            self.OnDuplicatedLevel = "@{0} Level {1} is already on queue. Duplicated levels are omitted"
             self.is_queue_limited = False
             self.queue_length = 25
             self.OnQueueLimitReached = "@{0} Level queue is full (Max {1} levels). Wait till a slot is free to add your level"
@@ -347,6 +348,11 @@ def AddLevel(code, data):
         SendResp(data, MySet.Usage, message)
         return
 
+    if MySet.omit_duplicated_levels and IsLevelOnQueue(code):
+        message = MySet.OnDuplicatedLevel.format(data.UserName, code)
+        SendResp(data, MySet.Usage, message)
+        return
+
     if levelCodePattern.match(code):
         try:
             isUIUpdateRequired = (levelsNumber <= 1)
@@ -440,6 +446,25 @@ def CountLevels():
         return len(levels)
     except:
         return 0
+
+def IsLevelOnQueue(levelCode):
+    """Checks if specified level is already on queue
+
+    Returns:
+    bool: True if level is present in queue, False otherwise
+    """
+
+    try:
+        with open(levelsFile, 'r') as f:
+            levels = f.readlines()
+
+            for level in levels:
+                if levelCode in level:
+                    return True
+
+        return False
+    except:
+        return False
 
 def CountLevelsByUser(userName):
     """Count levels on queue added by specified user

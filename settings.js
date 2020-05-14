@@ -62,5 +62,7 @@
   "UserCooldownDeleteLevel": 2,
   "CooldownRefreshOverlay": 2,
   "UserCooldownRefreshOverlay": 2,
-  "RespLevelFinishedDelete": "Nivel eliminado."
+  "RespLevelFinishedDelete": "Nivel eliminado.",
+  "omit_duplicated_levels": true,
+  "OnDuplicatedLevel": "@{0} El nivel {1} ya está en la cola. Los niveles duplicados se omiten"
 };

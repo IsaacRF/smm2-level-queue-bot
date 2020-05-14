@@ -108,6 +108,20 @@
     "tooltip": "Usage for where the script can be used!",
     "group": "Permissions"
   },
+    "omit_duplicated_levels": {
+    "type": "checkbox",
+    "value": true,
+    "label": "Omit duplicated levels",
+    "tooltip": "Omit levels that are currently on queue",
+    "group": "Limits & Cooldowns"
+  },
+    "OnDuplicatedLevel": {
+    "type": "textbox",
+    "value": "@{0} Level {1} is already on queue. Duplicated levels are omitted",
+    "label": "Duplicated level specified response",
+    "tooltip": "The message the bot will display when trying to add a duplicated level to queue. \r\n {0} = user \r\n {1} = level code",
+    "group": "Limits & Cooldowns"
+  },
     "is_queue_limited": {
     "type": "checkbox",
     "value": false,
