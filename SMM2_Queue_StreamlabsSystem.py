@@ -27,7 +27,6 @@ Description = "Super Mario Maker 2 Level Queue System"
 # ---------------------------------------
 # TODO List
 # ---------------------------------------
-#TODO: Fix list format
 #TODO: Update Readme.md and .txt
 #TODO: Allow to open and close the queue
 
@@ -49,8 +48,8 @@ MessageBox = ctypes.windll.user32.MessageBoxW
 MB_YES = 6
 eventLevelUpdate = "EVENT_SMM2QS_LEVEL_UPDATE"
 levelCodePattern = re.compile("([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})$")
-twitchLineBreak = "__________________________________________________________"
-twitchLineHeader = " ------------------------------------ Cola de niveles --------------------------------------"
+twitchLineBreak = "_______________________________________  "
+twitchLineHeader = "---------------- Cola de niveles -------------------"
 wins = 0
 skips = 0
 
@@ -392,7 +391,7 @@ def ListLevels(data):
         SendResp(data, MySet.Usage, message)
         return
 
-    header = twitchLineBreak + twitchLineHeader
+    header = twitchLineBreak + twitchLineHeader + twitchLineBreak
     body = ""
     lineNumber = 1
 

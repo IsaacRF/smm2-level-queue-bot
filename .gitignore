@@ -121,4 +121,7 @@ dmypy.json
 #Ignore levels file
 levels.txt
 
+#Ignore API KEY file
+API_Key.js
+
 # End of https://www.gitignore.io/api/python,visualstudiocode
