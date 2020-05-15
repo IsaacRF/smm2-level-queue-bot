@@ -64,5 +64,7 @@
   "UserCooldownRefreshOverlay": 2,
   "RespLevelFinishedDelete": "Nivel eliminado.",
   "omit_duplicated_levels": true,
-  "OnDuplicatedLevel": "@{0} El nivel {1} ya está en la cola. Los niveles duplicados se omiten"
+  "OnDuplicatedLevel": "@{0} El nivel {1} ya está en la cola. Los niveles duplicados se omiten",
+  "RespCurrentLevelRequested": "@{0} El nivel en juego es {1}",
+  "RespNextLevelRequested": "@{0} El siguiente nivel en cola es {1}"
 };

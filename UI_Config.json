@@ -346,6 +346,20 @@
     "tooltip": "Message sent when user inputs a wrong formatted level code",
     "group": "Responses"
   },
+    "RespCurrentLevelRequested": {
+    "type": "textbox",
+    "value": "@{0} Level currently played is {1}",
+    "label": "Current level response",
+    "tooltip": "Message sent when user request current level info",
+    "group": "Responses"
+  },
+    "RespNextLevelRequested": {
+    "type": "textbox",
+    "value": "@{0} Next level on queue is {1}",
+    "label": "Next level response on request",
+    "tooltip": "Message sent when user request next level info",
+    "group": "Responses"
+  },
     "RespNoLevelsOnQueue": {
     "type": "textbox",
     "value": "No levels on queue, add yours using {0}",
@@ -405,14 +419,14 @@
     "RespNextLevel": {
     "type": "textbox",
     "value": "Next level is {0}",
-    "label": "Next level response",
+    "label": "Next level on level finished response",
     "tooltip": "Message sent when next level info is required \r\n {0} = next level",
     "group": "Responses"
   },
     "RespNoMoreLevels": {
     "type": "textbox",
     "value": "No more levels on queue. Add your level using {0}",
-    "label": "Next level response",
+    "label": "No more levels on level finished response",
     "tooltip": "Message sent when next level info is required and there are no more levels \r\n {0} = add command",
     "group": "Responses"
   },

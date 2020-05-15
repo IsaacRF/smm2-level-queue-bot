@@ -34,7 +34,7 @@ Description = "Super Mario Maker 2 Level Queue System"
 # Versions
 # ---------------------------------------
 """ Major and recent Releases (open README.txt for full release notes)
-1.1.0 - Adds a levels overlay
+1.1.0 - Adds a levels overlay and adds responses to configuration
 1.0.0 - Initial Release
 """
 
@@ -115,6 +115,8 @@ class Settings:
             self.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
             self.RespErrorLevelAdd = "System error adding level to queue, call a mod"
             self.RespWrongLevelCodeFormat = "Código de nivel incorrecto, el formato debe coincidir con XXX-YYY-ZZZ, caracteres alfanuméricos sin símbolos ni las letras I, O"
+            self.RespCurrentLevelRequested = "@{0} Level currently played is {1}"
+            self.RespNextLevelRequested = "@{0} Next level on queue is {1}"
             self.RespNoLevelsOnQueue = "No levels on queue, add yours using {0}"
             self.RespErrorReadingQueue = "Error reading queue file, call a mod"
             self.RespErrorModifyingQueue = "Error updating queue file, call a mod"
@@ -494,17 +496,18 @@ def CountLevelsByUser(userName):
 
 def CurrentLevel(data):
     """Shows first level on queue"""
-    try:
-        with open(levelsFile, 'r') as f:
-            level = f.readline().strip()
+    #try:
+    with open(levelsFile, 'r') as f:
+        level = f.readline().strip()
 
-        if level == "":
-            message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
-            SendResp(data, MySet.Usage, message)
-        else:
-            SendResp(data, MySet.Usage, level)
-    except:
-        SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
+    if level == "":
+        message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
+        SendResp(data, MySet.Usage, message)
+    else:
+        message = MySet.RespCurrentLevelRequested.format(data.UserName, level)
+        SendResp(data, MySet.Usage, message)
+    #except:
+    #    SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
 def NextLevel(data):
     """Shows next level on queue"""
@@ -514,7 +517,8 @@ def NextLevel(data):
             if len(levels) >= 2:
                 level = levels[1].strip()
                 if level != "":
-                    SendResp(data, MySet.Usage, level)
+                    message = MySet.RespNextLevelRequested.format(data.UserName, level)
+                    SendResp(data, MySet.Usage, message)
                 else:
                     message = MySet.RespNoLevelsOnQueue.format(MySet.command_add)
                     SendResp(data, MySet.Usage, message)
