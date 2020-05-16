@@ -372,14 +372,14 @@
     "RespQueueOpened": {
     "type": "textbox",
     "value": "Level queue is now open! Use {0} to add levels to queue",
-    "label": "Info response",
+    "label": "Queue opened response",
     "tooltip": "Message sent when queue is open. \r\n {0} = add level command",
     "group": "Responses"
   },
     "RespQueueClosed": {
     "type": "textbox",
     "value": "Level queue closed! Wait till a mod open the queue again to add your level",
-    "label": "Info response",
+    "label": "Queue closed response",
     "tooltip": "Message sent when queue is closed",
     "group": "Responses"
   },
