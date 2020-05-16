@@ -25,12 +25,6 @@ Version = "1.1.0"
 Description = "Super Mario Maker 2 Level Queue System"
 
 # ---------------------------------------
-# TODO List
-# ---------------------------------------
-#TODO: Update Readme.md and .txt
-#TODO: Allow to open and close the queue
-
-# ---------------------------------------
 # Versions
 # ---------------------------------------
 """ Major and recent Releases (open README.txt for full release notes)
@@ -67,11 +61,15 @@ class Settings:
 
         else:  # set variables if no custom settings file is found
             self.OnlyLive = False
+            self.QueueOpen = True
+            self.command_info = "!smm2lqs"
             self.command_add = "!add"
             self.command_list = "!list"
             self.command_position = "!position"
             self.command_current_level = "!level"
             self.command_next_level = "!nextlevel"
+            self.command_queue_open = "!queueopen"
+            self.command_queue_close = "!queueclose"
             self.command_win_level = "!winlevel"
             self.command_skip_level = "!skiplevel"
             self.command_delete_level = "!deletelevel"
@@ -112,6 +110,8 @@ class Settings:
             self.OnCooldown = "@{0} the command {1} is still on cooldown for {2} seconds!"
             self.OnUserCooldown = "@{0} the command {1} is still on user cooldown for {2} seconds!"
             self.RespInfo = "!add <código> para añadir un nivel a la lista. !level, !nextlevel o !list para info"
+            self.RespQueueOpened = "Level queue is now open! Use {0} to add levels to queue"
+            self.RespQueueClosed = "Level queue closed! Wait till a mod open the queue again to add your level"
             self.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
             self.RespErrorLevelAdd = "System error adding level to queue, call a mod"
             self.RespWrongLevelCodeFormat = "Código de nivel incorrecto, el formato debe coincidir con XXX-YYY-ZZZ, caracteres alfanuméricos sin símbolos ni las letras I, O"
@@ -302,7 +302,8 @@ def IsOnCooldown(data):
 
 def HasPermission(data):
     """Returns true if user has permission and false if user doesn't"""
-    if (data.GetParam(0).lower() == MySet.command_add.lower() or
+    if (data.GetParam(0).lower() == MySet.command_info.lower() or
+    data.GetParam(0).lower() == MySet.command_add.lower() or
     data.GetParam(0).lower() == MySet.command_list.lower() or
     data.GetParam(0).lower() == MySet.command_position.lower() or
     data.GetParam(0).lower() == MySet.command_current_level.lower() or
@@ -312,6 +313,8 @@ def HasPermission(data):
             SendResp(data, MySet.Usage, message)
             return False
     elif (data.GetParam(0).lower() == MySet.command_win_level.lower() or
+    data.GetParam(0).lower() == MySet.command_queue_open.lower() or
+    data.GetParam(0).lower() == MySet.command_queue_close.lower() or
     data.GetParam(0).lower() == MySet.command_skip_level.lower() or
     data.GetParam(0).lower() == MySet.command_delete_level.lower() or
     data.GetParam(0).lower() == MySet.command_refresh_overlay.lower()):
@@ -325,6 +328,12 @@ def HasPermission(data):
 # ---------------------------------------
 # [Script] functions
 # ---------------------------------------
+def SMM2LQSInfo(data):
+    """Sends a chat response containing commands info"""
+
+    message = MySet.RespInfo.format(MySet.command_add, MySet.command_current_level, MySet.command_next_level, MySet.command_list, MySet.command_position)
+    SendResp(data, MySet.Usage, message)
+
 def AddLevel(code, data):
     """Adds a level to queue file and updates overlay if 1 or less levels are in queue
 
@@ -336,7 +345,11 @@ def AddLevel(code, data):
     levelsNumber = CountLevels()
 
     if code == "":
-        SendResp(data, MySet.Usage, MySet.RespInfo)
+        SMM2LQSInfo(data)
+        return
+
+    if not MySet.QueueOpen:
+        SendResp(data, MySet.Usage, MySet.RespQueueClosed)
         return
 
     if MySet.is_queue_limited and levelsNumber >= MySet.queue_length:
@@ -615,6 +628,23 @@ def RefreshOverlay(data):
         except:
             SendResp(data, MySet.Usage, MySet.RespErrorOverlayUpdate)
 
+def QueueChangeState(data, state=True):
+    """Changes queue state
+
+    Parameters:
+    data: Command execution info
+    state (bool): Open queue if True, close queue otherwise (default True)
+    """
+
+    MySet.QueueOpen = state
+    Settings.Save(MySet, settingsFile)
+
+    if state:
+        message = MySet.RespQueueOpened.format(MySet.command_add)
+        SendResp(data, MySet.Usage, message)
+    else:
+        SendResp(data, MySet.Usage, MySet.RespQueueClosed)
+
 # ---------------------------------------
 # [Required] functions
 # ---------------------------------------
@@ -668,6 +698,12 @@ def Execute(data):
         elif data.GetParam(0).lower() == MySet.command_next_level.lower():
             NextLevel(data)
             AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownNextLevel, MySet.CooldownNextLevel)
+            return
+        elif data.GetParam(0).lower() == MySet.command_queue_open.lower():
+            QueueChangeState(data, True)
+            return
+        elif data.GetParam(0).lower() == MySet.command_queue_close.lower():
+            QueueChangeState(data, False)
             return
         elif data.GetParam(0).lower() == MySet.command_win_level.lower():
             FinishLevel(data, 0)

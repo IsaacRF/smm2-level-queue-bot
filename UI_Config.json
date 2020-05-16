@@ -4,8 +4,22 @@
     "type": "checkbox",
     "value": false,
     "label": "Only when live",
-    "tooltip": "Command is only active when stream is live",
+    "tooltip": "Commands are only active when stream is live",
     "group": "General"
+  },
+    "QueueOpen": {
+    "type": "checkbox",
+    "value": true,
+    "label": "Queue open",
+    "tooltip": "Add level command is only active when queue is open",
+    "group": "General"
+  },
+    "command_info": {
+    "type": "textbox",
+    "value": "!smm2lqs",
+  	"label": "Command Name (Info)",
+    "tooltip": "Command to get info about SMM2 Level Queue System",
+  	"group": "General"
   },
     "command_add": {
     "type": "textbox",
@@ -40,7 +54,21 @@
     "value": "!nextlevel",
   	"label": "Command Name (Next level)",
     "tooltip": "Command to show next level in queue, if any",
-  	"group": "Advanced Permission Commands"
+  	"group": "General"
+  },
+    "command_queue_open": {
+    "type": "textbox",
+    "value": "!queueopen",
+    "label": "Command Name (Open Queue)",
+    "tooltip": "Command to open queue",
+    "group": "Advanced Permission Commands"
+  },
+    "command_queue_close": {
+    "type": "textbox",
+    "value": "!queueclose",
+    "label": "Command Name (Close Queue)",
+    "tooltip": "Command to close queue",
+    "group": "Advanced Permission Commands"
   },
     "command_win_level": {
     "type": "textbox",
@@ -320,9 +348,23 @@
   },
     "RespInfo": {
     "type": "textbox",
-    "value": "!add <código> para añadir un nivel a la lista. !level, !nextlevel o !list para info",
+    "value": "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info",
     "label": "Info response",
-    "tooltip": "Message sent when the command !add is used without parameters",
+    "tooltip": "Message sent when commands info is required. \r\n {0} = add level command \r\n {1} = current level command \r\n {2} = next level command \r\n {3} = list levels command \r\n {4} = position command",
+    "group": "Responses"
+  },
+    "RespQueueOpened": {
+    "type": "textbox",
+    "value": "Level queue is now open! Use {0} to add levels to queue",
+    "label": "Info response",
+    "tooltip": "Message sent when queue is open. \r\n {0} = add level command",
+    "group": "Responses"
+  },
+    "RespQueueClosed": {
+    "type": "textbox",
+    "value": "Level queue closed! Wait till a mod open the queue again to add your level",
+    "label": "Info response",
+    "tooltip": "Message sent when queue is closed",
     "group": "Responses"
   },
     "RespLevelAdded": {
