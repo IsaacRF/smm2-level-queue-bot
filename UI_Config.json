@@ -516,6 +516,30 @@
     "tooltip": "Message sent when user doesn't select any valid wire. \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
     "group": "Responses"
   },
+    "OpenHiroTwitchChannel": {
+    "type": "button",
+    "label": "Visit Hiro Twitch Channel",
+    "tooltip": "Visit Hiro Twitch Channel, one of the creators of SMM2 Level Queue System",
+    "function": "openCreatorTwitchChannel",
+    "wsevent": "",
+    "group": ""
+  },
+    "OpenIsaacWebsite": {
+    "type": "button",
+    "label": "Visit Isaac Website",
+    "tooltip": "Visit Isaac Website, a.k.a. Hiro, one of the creators of SMM2 Level Queue System",
+    "function": "openAuthor1Website",
+    "wsevent": "",
+    "group": ""
+  },
+    "OpenGabrielWebsite": {
+    "type": "button",
+    "label": "Visit Gabriel Website",
+    "tooltip": "Visit Gabriel Rodríguez Website, one of the creators of SMM2 Level Queue System",
+    "function": "openAuthor2Website",
+    "wsevent": "",
+    "group": ""
+  },
     "CopyOverlayIndexPath": {
     "type": "button",
     "label": "Copy overlay index path",

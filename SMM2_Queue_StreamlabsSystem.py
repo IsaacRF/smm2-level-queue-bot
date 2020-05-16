@@ -282,6 +282,15 @@ def ReloadSettings(jsondata):
     global MySet
     MySet.Reload(jsondata)
 
+def openCreatorTwitchChannel():
+    os.startfile(Website)
+
+def openAuthor1Website():
+    os.startfile(Author1Website)
+
+def openAuthor2Website():
+    os.startfile(Author2Website)
+
 # ---------------------------------------
 # Optional functions
 # ---------------------------------------
