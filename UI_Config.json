@@ -346,6 +346,22 @@
     "tooltip": "The message that the bot will display when the command is on user cooldown. \r\n {0} = user \r\n {1} = time remaining",
   	"group": "Limits & Cooldowns"
   },
+    "BtnRestoreAndTranslateResponsesENG": {
+    "type": "button",
+    "label": "Restore default responses (English)",
+    "tooltip": "Restore default responses translated to English (Default)",
+    "function": "RestoreAndTranslateDefaultResponsesENG",
+    "wsevent": "",
+    "group": "Responses"
+  },
+    "BtnRestoreAndTranslateResponsesESP": {
+    "type": "button",
+    "label": "Restaura las respuestas por defecto (Español)",
+    "tooltip": "Restaura las respuestas por defecto traducidas al Español",
+    "function": "RestoreAndTranslateDefaultResponsesESP",
+    "wsevent": "",
+    "group": "Responses"
+  },
     "RespInfo": {
     "type": "textbox",
     "value": "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info",

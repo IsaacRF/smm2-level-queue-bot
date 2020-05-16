@@ -109,7 +109,7 @@ class Settings:
             self.UserCooldownRefreshOverlay = 2
             self.OnCooldown = "@{0} the command {1} is still on cooldown for {2} seconds!"
             self.OnUserCooldown = "@{0} the command {1} is still on user cooldown for {2} seconds!"
-            self.RespInfo = "!add <código> para añadir un nivel a la lista. !level, !nextlevel o !list para info"
+            self.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info"
             self.RespQueueOpened = "Level queue is now open! Use {0} to add levels to queue"
             self.RespQueueClosed = "Level queue closed! Wait till a mod open the queue again to add your level"
             self.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
@@ -198,6 +198,84 @@ def SetDefaults():
         returnValue = MessageBox(
             0, u"Settings successfully restored to default values", u"Reset complete!", 0)
 
+def RestoreAndTranslateDefaultResponsesESP():
+    RestoreAndTranslateDefaultResponses("ESP")
+
+def RestoreAndTranslateDefaultResponsesENG():
+    RestoreAndTranslateDefaultResponses("ENG")
+
+def RestoreAndTranslateDefaultResponses(language="ENG"):
+    """Restore ONLY default responses in different languages"""
+
+    """Set default settings function"""
+    winsound.MessageBeep()
+    returnValue = MessageBox(0, u"You are about to reset the chat responses to default ones (" + language + "), "
+                                "are you sure you want to contine?", u"Reset chat responses?", 4)
+    if returnValue != MB_YES:
+        return
+
+    if language == "ESP":
+        MySet.OnDuplicatedLevel = "@{0} El nivel {1} ya está en la cola. Los niveles duplicados se omiten"
+        MySet.OnQueueLimitReached = "@{0} La cola está llena ({1} niveles máximo). Espera a que se libere un hueco para añadir tu nivel"
+        MySet.OnMaxLevelsByUserReached = "@{0} Has alcanzado el máximo de niveles por persona ({1}), espera a que se complete alguno de tus niveles para añadir otro"
+        MySet.OnCooldown = "@{0} el comando {1} aún está en cooldown global. Espera {2} segundos"
+        MySet.OnUserCooldown = "@{0} aún faltan {2} segundos para que puedas usar el comando {1}"
+        MySet.RespInfo = "{0} <código> (En formato XXX-YYY-ZZZ, caracteres alfanuméricos excluyendo I, O) para añadir un nivel a la lista. {1}, {2}, {3} o {4} para info"
+        MySet.RespQueueOpened = "Cola de niveles abierta! Usa {0} <código> para añadir niveles a la cola"
+        MySet.RespQueueClosed = "Cola de niveles cerrada! Espera a que un mod la vuelva a abrir para añadir tus niveles"
+        MySet.RespLevelAdded = "@{0} ha añadido el nivel {1} a la cola en la posición [{2}]"
+        MySet.RespErrorLevelAdd = "Error del sistema al añadir el nivel a la cola, avisa a un mod"
+        MySet.RespWrongLevelCodeFormat = "Código de nivel incorrecto, el formato debe coincidir con XXX-YYY-ZZZ, caracteres alfanuméricos sin símbolos ni las letras I, O"
+        MySet.RespCurrentLevelRequested = "@{0} El nivel en juego es {1}"
+        MySet.RespNextLevelRequested = "@{0} El siguiente nivel en cola es {1}"
+        MySet.RespNoLevelsOnQueue = "No hay niveles en la cola. Añade el tuyo usando {0}"
+        MySet.RespErrorReadingQueue = "Error al intentar leer la lista de niveles, avisa a un mod"
+        MySet.RespErrorModifyingQueue = "Error al intentar actualizar la lista de niveles, avisa a un mod"
+        MySet.RespUserLevelPositions = "@{0} tienes niveles en las posiciones {1}"
+        MySet.RespUserLevelPositionsNoLevels = "@{0} no tienes niveles en cola"
+        MySet.RespLevelFinishedWin = "¡Nivel superado!"
+        MySet.RespLevelFinishedSkip = "Nivel skipeado."
+        MySet.RespLevelFinishedDelete = "Nivel eliminado."
+        MySet.RespNextLevel = "El siguiente nivel es {0}"
+        MySet.RespNoMoreLevels = "No hay más niveles en cola, añade el tuyo con {0}"
+        MySet.RespOverlayUpdated = "Here we go! Overlay de niveles actualizado"
+        MySet.RespErrorOverlayUpdate = "Error actualizando el overlay de niveles. Dale un toque a alguien del staff"
+        MySet.RespPermissionBase= "$user -> Sólo $permissionbase ($permissioninfobase) o superior pueden usar este comando"
+        MySet.RespPermissionAdvanced= "$user -> Sólo $permissionadvanced ($permissioninfoadvanced) o superior pueden usar este comando"
+    else:
+        MySet.OnDuplicatedLevel = "@{0} Level {1} is already on queue. Duplicated levels are omitted"
+        MySet.OnQueueLimitReached = "@{0} Level queue is full (Max {1} levels). Wait till a slot is free to add your level"
+        MySet.OnMaxLevelsByUserReached = "@{0} You have reached max levels by user ({1}), wait till one of your levels is completed to add another one"
+        MySet.OnCooldown = "@{0} the command {1} is still on cooldown for {2} seconds!"
+        MySet.OnUserCooldown = "@{0} the command {1} is still on user cooldown for {2} seconds!"
+        MySet.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info"
+        MySet.RespQueueOpened = "Level queue is now open! Use {0} to add levels to queue"
+        MySet.RespQueueClosed = "Level queue closed! Wait till a mod open the queue again to add your level"
+        MySet.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
+        MySet.RespErrorLevelAdd = "System error adding level to queue, call a mod"
+        MySet.RespWrongLevelCodeFormat = "Código de nivel incorrecto, el formato debe coincidir con XXX-YYY-ZZZ, caracteres alfanuméricos sin símbolos ni las letras I, O"
+        MySet.RespCurrentLevelRequested = "@{0} Level currently played is {1}"
+        MySet.RespNextLevelRequested = "@{0} Next level on queue is {1}"
+        MySet.RespNoLevelsOnQueue = "No levels on queue, add yours using {0}"
+        MySet.RespErrorReadingQueue = "Error reading queue file, call a mod"
+        MySet.RespErrorModifyingQueue = "Error updating queue file, call a mod"
+        MySet.RespUserLevelPositions = "@{0} you have levels on positions {1}"
+        MySet.RespUserLevelPositionsNoLevels = "@{0} you have no levels on queue"
+        MySet.RespLevelFinishedWin = "Level completed!"
+        MySet.RespLevelFinishedSkip = "Level skipped."
+        MySet.RespLevelFinishedDelete = "Level deleted."
+        MySet.RespNextLevel = "Next level is {0}"
+        MySet.RespNoMoreLevels = "No more levels on queue. Add your level using {0}"
+        MySet.RespOverlayUpdated = "Here we go! Levels Overlay updated"
+        MySet.RespErrorOverlayUpdate = "Error updating overlay. Call a staff member"
+        MySet.RespPermissionBase= "$user -> Only $permissionbase ($permissioninfobase) or higher can use this command"
+        MySet.RespPermissionAdvanced= "$user -> Only $permissionadvanced ($permissioninfoadvanced) or higher can use this command"
+
+    Settings.Save(MySet, settingsFile)
+
+    MessageBox(
+            0, u"Default responses in (" + language + ") restored. "
+                "RELOAD SCRIPTS to see new responses on config panel.", u"Translation complete!", 0)
 
 def ReloadSettings(jsondata):
     """Reload settings on pressing the save button"""
