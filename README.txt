@@ -29,7 +29,7 @@ SMM2 Level Queue System es un bot / script de Streamlabs que permite a los usuar
     This folder is usually located on "C:\Users\Username\AppData\Roaming\Streamlabs\Streamlabs Chatbot\Services\Scripts"
 2.- Right click the script and press "Insert API Key"
 3.- On the right panel, configure your commands, limits, cooldowns and bot responses as you wish. You can instantly restore or translate default responses to English and Spanish using the buttons in the "Responses" section of the configuration
-4.- If you want to use the integrated overlay, add a Browser view to your Stream soft, local file, and select the file /overlay/index.html
+4.- If you want to use the integrated overlay, add a Browser view to your Stream soft, local file, and select the file /overlay/index.html. Recommended browser source size is 1400x250px, tweak these values until you get the desired size, and avoid resizing the graphic element in scene to avoid text blurriness
 5.- The bot is ready to go
 
 [Español]
@@ -40,7 +40,7 @@ SMM2 Level Queue System es un bot / script de Streamlabs que permite a los usuar
     Este directorio suele estar localizado en "C:\Users\Username\AppData\Roaming\Streamlabs\Streamlabs Chatbot\Services\Scripts"
 2.- Haz click derecho en el script y selecciona "Insert API Key"
 3.- En el panel de la derecha, configura tus comandos, limites, cooldowns y las respuestas del bot como prefieras. Puedes restaurar y traducir las respuestas por defecto a Inglés y Español usando los botones dentro de la sección "Responses" de la configuración
-4.- Si quieres usar el overlay integrado, añade una Browser view en tu programa de stream, selecciona archivo local / local file, y selecciona el archivo /overlay/index.html que se encuentra dentro del bot
+4.- Si quieres usar el overlay integrado, añade una Browser view en tu programa de stream, selecciona archivo local / local file, y selecciona el archivo /overlay/index.html que se encuentra dentro del bot. El tamaño del browser source recomendado es 1400x250px, modifica estos valores para adaptar el tamaño en lugar de redimensionar el elemento en la escena, ya que podría causar blur en los textos.
 5.- El bot está listo para usar
 
 #####################
