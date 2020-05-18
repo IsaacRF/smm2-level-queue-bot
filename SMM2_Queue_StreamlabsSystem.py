@@ -109,7 +109,7 @@ class Settings:
             self.UserCooldownRefreshOverlay = 2
             self.OnCooldown = "@{0} the command {1} is still on cooldown for {2} seconds!"
             self.OnUserCooldown = "@{0} the command {1} is still on user cooldown for {2} seconds!"
-            self.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info"
+            self.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info. SMM2 Level Queue System developed by {5}"
             self.RespQueueOpened = "Level queue is now open! Use {0} to add levels to queue"
             self.RespQueueClosed = "Level queue closed! Wait till a mod open the queue again to add your level"
             self.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
@@ -220,7 +220,7 @@ def RestoreAndTranslateDefaultResponses(language="ENG"):
         MySet.OnMaxLevelsByUserReached = "@{0} Has alcanzado el máximo de niveles por persona ({1}), espera a que se complete alguno de tus niveles para añadir otro"
         MySet.OnCooldown = "@{0} el comando {1} aún está en cooldown global. Espera {2} segundos"
         MySet.OnUserCooldown = "@{0} aún faltan {2} segundos para que puedas usar el comando {1}"
-        MySet.RespInfo = "{0} <código> (En formato XXX-YYY-ZZZ, caracteres alfanuméricos excluyendo I, O) para añadir un nivel a la lista. {1}, {2}, {3} o {4} para info"
+        MySet.RespInfo = "{0} <código> (En formato XXX-YYY-ZZZ, caracteres alfanuméricos excluyendo I, O) para añadir un nivel a la lista. {1}, {2}, {3} o {4} para info. SMM2 Level Queue System desarrollado por {5}"
         MySet.RespQueueOpened = "Cola de niveles abierta! Usa {0} <código> para añadir niveles a la cola"
         MySet.RespQueueClosed = "Cola de niveles cerrada! Espera a que un mod la vuelva a abrir para añadir tus niveles"
         MySet.RespLevelAdded = "@{0} ha añadido el nivel {1} a la cola en la posición [{2}]"
@@ -248,7 +248,7 @@ def RestoreAndTranslateDefaultResponses(language="ENG"):
         MySet.OnMaxLevelsByUserReached = "@{0} You have reached max levels by user ({1}), wait till one of your levels is completed to add another one"
         MySet.OnCooldown = "@{0} the command {1} is still on cooldown for {2} seconds!"
         MySet.OnUserCooldown = "@{0} the command {1} is still on user cooldown for {2} seconds!"
-        MySet.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info"
+        MySet.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info. SMM2 Level Queue System developed by {5}"
         MySet.RespQueueOpened = "Level queue is now open! Use {0} to add levels to queue"
         MySet.RespQueueClosed = "Level queue closed! Wait till a mod open the queue again to add your level"
         MySet.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
@@ -418,7 +418,7 @@ def HasPermission(data):
 def SMM2LQSInfo(data):
     """Sends a chat response containing commands info"""
 
-    message = MySet.RespInfo.format(MySet.command_add, MySet.command_current_level, MySet.command_next_level, MySet.command_list, MySet.command_position)
+    message = MySet.RespInfo.format(MySet.command_add, MySet.command_current_level, MySet.command_next_level, MySet.command_list, MySet.command_position, Creator)
     SendResp(data, MySet.Usage, message)
 
 def AddLevel(code, data):

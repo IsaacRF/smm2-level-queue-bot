@@ -364,9 +364,9 @@
   },
     "RespInfo": {
     "type": "textbox",
-    "value": "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info",
+    "value": "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info. SMM2 Level Queue System developed by {5}",
     "label": "Info response",
-    "tooltip": "Message sent when commands info is required. \r\n {0} = add level command \r\n {1} = current level command \r\n {2} = next level command \r\n {3} = list levels command \r\n {4} = position command",
+    "tooltip": "Message sent when commands info is required. \r\n {0} = add level command \r\n {1} = current level command \r\n {2} = next level command \r\n {3} = list levels command \r\n {4} = position command \r\n {5} = bot author",
     "group": "Responses"
   },
     "RespQueueOpened": {
