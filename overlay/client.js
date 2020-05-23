@@ -244,7 +244,7 @@ $(function() {
             },
             settings: {
                 enabled: true,
-                frequency: 5,  // Show every X seconds
+                frequency: 300,  // Show every X seconds
                 duration: 25     // Show for X seconds (ideally, same as the marquee animation duration)
             }
         }

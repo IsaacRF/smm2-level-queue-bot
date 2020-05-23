@@ -206,6 +206,20 @@
     "tooltip": "Enable/Disable cooldown for caster",
     "group": "Limits & Cooldowns"
   },
+    "CooldownInfo": {
+    "type": "numberbox",
+  	"label": "Info Global Cooldown (seconds)",
+    "value": 0,
+    "tooltip": "Cooldown in seconds for info command.",
+  	"group": "Limits & Cooldowns"
+  },
+    "UserCooldownInfo": {
+    "type": "numberbox",
+  	"label": "Info User Cooldown (seconds)",
+    "value": 3,
+    "tooltip": "User cooldown in seconds for info command.",
+  	"group": "Limits & Cooldowns"
+  },
     "CooldownAdd": {
     "type": "numberbox",
   	"label": "Add Global Cooldown (seconds)",
@@ -364,9 +378,9 @@
   },
     "RespInfo": {
     "type": "textbox",
-    "value": "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info. SMM2 Level Queue System developed by {5}",
+    "value": "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info",
     "label": "Info response",
-    "tooltip": "Message sent when commands info is required. \r\n {0} = add level command \r\n {1} = current level command \r\n {2} = next level command \r\n {3} = list levels command \r\n {4} = position command \r\n {5} = bot author",
+    "tooltip": "Message sent when commands info is required. \r\n {0} = add level command \r\n {1} = current level command \r\n {2} = next level command \r\n {3} = list levels command \r\n {4} = position command",
     "group": "Responses"
   },
     "RespQueueOpened": {
@@ -515,6 +529,14 @@
     "label": "Advanced Permissions denied response",
     "tooltip": "Message sent when user doesn't select any valid wire. \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
     "group": "Responses"
+  },
+    "VisitProjectWebsite": {
+    "type": "button",
+    "label": "Visit SMM2LQS Website",
+    "tooltip": "Visit SMM2LQS project website. The GitHub repository",
+    "function": "openProjectWebsite",
+    "wsevent": "",
+    "group": ""
   },
     "OpenHiroTwitchChannel": {
     "type": "button",

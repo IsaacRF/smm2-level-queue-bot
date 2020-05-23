@@ -17,8 +17,9 @@ import ctypes
 # [Required] Script information
 # ---------------------------------------
 ScriptName = "SMM2 Level Queue System"
-Website = "https://twitch.tv/clickandslash"
+Website = "https://github.com/IsaacRF/smm2lqs"
 Creator = "IsaacRF239 & Gabriel Rodríguez"
+TwitchChannelUrl = "https://twitch.tv/clickandslash"
 Author1Website = "https://isaacrf.com"
 Author2Website = "https://twitter.com/gabri239"
 Version = "1.1.0"
@@ -44,6 +45,7 @@ eventLevelUpdate = "EVENT_SMM2QS_LEVEL_UPDATE"
 levelCodePattern = re.compile("([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})$")
 twitchLineBreak = "_______________________________________  "
 twitchLineHeader = "---------------- Cola de niveles -------------------"
+copyrightLine = "SMM2 Level Queue System developed by " + Creator + ". " + Website
 wins = 0
 skips = 0
 
@@ -89,6 +91,8 @@ class Settings:
             self.OnMaxLevelsByUserReached = "@{0} You have reached max levels by user ({1}), wait till one of your levels is completed to add another one"
             self.UseCD = True
             self.CasterCD = True
+            self.CooldownInfo = 0
+            self.UserCooldownInfo = 3
             self.CooldownAdd = 0
             self.UserCooldownAdd = 3
             self.CooldownList = 10
@@ -109,7 +113,7 @@ class Settings:
             self.UserCooldownRefreshOverlay = 2
             self.OnCooldown = "@{0} the command {1} is still on cooldown for {2} seconds!"
             self.OnUserCooldown = "@{0} the command {1} is still on user cooldown for {2} seconds!"
-            self.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info. SMM2 Level Queue System developed by {5}"
+            self.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info"
             self.RespQueueOpened = "Level queue is now open! Use {0} to add levels to queue"
             self.RespQueueClosed = "Level queue closed! Wait till a mod open the queue again to add your level"
             self.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
@@ -220,7 +224,7 @@ def RestoreAndTranslateDefaultResponses(language="ENG"):
         MySet.OnMaxLevelsByUserReached = "@{0} Has alcanzado el máximo de niveles por persona ({1}), espera a que se complete alguno de tus niveles para añadir otro"
         MySet.OnCooldown = "@{0} el comando {1} aún está en cooldown global. Espera {2} segundos"
         MySet.OnUserCooldown = "@{0} aún faltan {2} segundos para que puedas usar el comando {1}"
-        MySet.RespInfo = "{0} <código> (En formato XXX-YYY-ZZZ, caracteres alfanuméricos excluyendo I, O) para añadir un nivel a la lista. {1}, {2}, {3} o {4} para info. SMM2 Level Queue System desarrollado por {5}"
+        MySet.RespInfo = "{0} <código> (En formato XXX-YYY-ZZZ, caracteres alfanuméricos excluyendo I, O) para añadir un nivel a la lista. {1}, {2}, {3} o {4} para info"
         MySet.RespQueueOpened = "Cola de niveles abierta! Usa {0} <código> para añadir niveles a la cola"
         MySet.RespQueueClosed = "Cola de niveles cerrada! Espera a que un mod la vuelva a abrir para añadir tus niveles"
         MySet.RespLevelAdded = "@{0} ha añadido el nivel {1} a la cola en la posición [{2}]"
@@ -248,7 +252,7 @@ def RestoreAndTranslateDefaultResponses(language="ENG"):
         MySet.OnMaxLevelsByUserReached = "@{0} You have reached max levels by user ({1}), wait till one of your levels is completed to add another one"
         MySet.OnCooldown = "@{0} the command {1} is still on cooldown for {2} seconds!"
         MySet.OnUserCooldown = "@{0} the command {1} is still on user cooldown for {2} seconds!"
-        MySet.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info. SMM2 Level Queue System developed by {5}"
+        MySet.RespInfo = "{0} <code> (XXX-YYY-ZZZ format, alphanumeric characters excluding I, O) to add a level to queue. {1}, {2}, {3} or {4} for info"
         MySet.RespQueueOpened = "Level queue is now open! Use {0} to add levels to queue"
         MySet.RespQueueClosed = "Level queue closed! Wait till a mod open the queue again to add your level"
         MySet.RespLevelAdded = "@{0} added level {1} to queue on position [{2}]"
@@ -282,8 +286,11 @@ def ReloadSettings(jsondata):
     global MySet
     MySet.Reload(jsondata)
 
-def openCreatorTwitchChannel():
+def openProjectWebsite():
     os.startfile(Website)
+
+def openCreatorTwitchChannel():
+    os.startfile(TwitchChannelUrl)
 
 def openAuthor1Website():
     os.startfile(Author1Website)
@@ -367,28 +374,31 @@ def AddCooldown(command, user, userCooldown, globalCooldown):
 
 def IsOnCooldown(data):
     """Return true if command is on cooldown and send cooldown message if enabled"""
-    isOnCooldown = Parent.IsOnCooldown(ScriptName, data.GetParam(0).lower())
-    isOnUserCooldown = Parent.IsOnUserCooldown(ScriptName, data.GetParam(0).lower(), data.User)
+
+    command = data.GetParam(0).lower()
+
+    isOnCooldown = Parent.IsOnCooldown(ScriptName, command)
+    isOnUserCooldown = Parent.IsOnUserCooldown(ScriptName, command, data.User)
     isCaster = (Parent.HasPermission(data.User, "Caster", "") and MySet.CasterCD)
 
     if (isOnCooldown or isOnUserCooldown) and not isCaster:
         if MySet.UseCD:
-            cooldownDuration = Parent.GetCooldownDuration(ScriptName, data.GetParam(0).lower())
-            userCDD = Parent.GetUserCooldownDuration(ScriptName, data.GetParam(0).lower(), data.User)
+            cooldownDuration = Parent.GetCooldownDuration(ScriptName, command)
+            userCDD = Parent.GetUserCooldownDuration(ScriptName, command, data.User)
 
             if cooldownDuration > userCDD:
                 m_CooldownRemaining = cooldownDuration
-                message = MySet.OnCooldown.format(data.UserName, data.GetParam(0).lower(), m_CooldownRemaining)
+                message = MySet.OnCooldown.format(data.UserName, command, m_CooldownRemaining)
                 SendResp(data, MySet.Usage, message)
             else:
                 m_CooldownRemaining = userCDD
-                message = MySet.OnUserCooldown.format(data.UserName, data.GetParam(0).lower(), m_CooldownRemaining)
+                message = MySet.OnUserCooldown.format(data.UserName, command, m_CooldownRemaining)
                 SendResp(data, MySet.Usage, message)
         return True
     return False
 
 def HasPermission(data):
-    """Returns true if user has permission and false if user doesn't"""
+    """Returns true if user has permission on executed command, and false otherwise"""
     if (data.GetParam(0).lower() == MySet.command_info.lower() or
     data.GetParam(0).lower() == MySet.command_add.lower() or
     data.GetParam(0).lower() == MySet.command_list.lower() or
@@ -418,8 +428,8 @@ def HasPermission(data):
 def SMM2LQSInfo(data):
     """Sends a chat response containing commands info"""
 
-    message = MySet.RespInfo.format(MySet.command_add, MySet.command_current_level, MySet.command_next_level, MySet.command_list, MySet.command_position, Creator)
-    SendResp(data, MySet.Usage, message)
+    message = MySet.RespInfo.format(MySet.command_add, MySet.command_current_level, MySet.command_next_level, MySet.command_list, MySet.command_position)
+    SendResp(data, MySet.Usage, message + ". " + copyrightLine)
 
 def AddLevel(code, data):
     """Adds a level to queue file and updates overlay if 1 or less levels are in queue
@@ -503,7 +513,7 @@ def ListLevels(data):
                 body += "[" + str(lineNumber) + "] " + line.replace('\n','') + " " + twitchLineBreak
                 lineNumber += 1
 
-        SendResp(data, MySet.Usage, header + body)
+        SendResp(data, MySet.Usage, header + body + copyrightLine)
     except:
         SendResp(data, MySet.Usage, MySet.RespErrorReadingQueue)
 
@@ -762,51 +772,57 @@ def Execute(data):
         return
 
     if data.IsChatMessage() and not MySet.OnlyLive or Parent.IsLive():
+        command = data.GetParam(0).lower()
+
         if IsOnCooldown(data):
             return
 
-        if data.GetParam(0).lower() == MySet.command_add.lower():
+        if command == MySet.command_info.lower():
+            SMM2LQSInfo(data)
+            AddCooldown(command, data.User, MySet.UserCooldownInfo, MySet.CooldownInfo)
+            return
+        elif command == MySet.command_add.lower():
             levelCode = data.Message.replace(data.GetParam(0),'').strip().replace(' ','-').upper()
             AddLevel(levelCode, data)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownAdd, MySet.CooldownAdd)
+            AddCooldown(command, data.User, MySet.UserCooldownAdd, MySet.CooldownAdd)
             return
-        elif data.GetParam(0).lower() == MySet.command_list.lower():
+        elif command == MySet.command_list.lower():
             ListLevels(data)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownList, MySet.CooldownList)
+            AddCooldown(command, data.User, MySet.UserCooldownList, MySet.CooldownList)
             return
-        elif data.GetParam(0).lower() == MySet.command_position.lower():
+        elif command == MySet.command_position.lower():
             GetPositions(data)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownPosition, MySet.CooldownPosition)
+            AddCooldown(command, data.User, MySet.UserCooldownPosition, MySet.CooldownPosition)
             return
-        elif data.GetParam(0).lower() == MySet.command_current_level.lower():
+        elif command == MySet.command_current_level.lower():
             CurrentLevel(data)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownCurrentLevel, MySet.CooldownCurrentLevel)
+            AddCooldown(command, data.User, MySet.UserCooldownCurrentLevel, MySet.CooldownCurrentLevel)
             return
-        elif data.GetParam(0).lower() == MySet.command_next_level.lower():
+        elif command == MySet.command_next_level.lower():
             NextLevel(data)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownNextLevel, MySet.CooldownNextLevel)
+            AddCooldown(command, data.User, MySet.UserCooldownNextLevel, MySet.CooldownNextLevel)
             return
-        elif data.GetParam(0).lower() == MySet.command_queue_open.lower():
+        elif command == MySet.command_queue_open.lower():
             QueueChangeState(data, True)
             return
-        elif data.GetParam(0).lower() == MySet.command_queue_close.lower():
+        elif command == MySet.command_queue_close.lower():
             QueueChangeState(data, False)
             return
-        elif data.GetParam(0).lower() == MySet.command_win_level.lower():
+        elif command == MySet.command_win_level.lower():
             FinishLevel(data, 0)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownWinLevel, MySet.CooldownWinLevel)
+            AddCooldown(command, data.User, MySet.UserCooldownWinLevel, MySet.CooldownWinLevel)
             return
-        elif data.GetParam(0).lower() == MySet.command_skip_level.lower():
+        elif command == MySet.command_skip_level.lower():
             FinishLevel(data, 1)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownSkipLevel, MySet.CooldownSkipLevel)
+            AddCooldown(command, data.User, MySet.UserCooldownSkipLevel, MySet.CooldownSkipLevel)
             return
-        elif data.GetParam(0).lower() == MySet.command_delete_level.lower():
+        elif command == MySet.command_delete_level.lower():
             FinishLevel(data, 2)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownDeleteLevel, MySet.CooldownDeleteLevel)
+            AddCooldown(command, data.User, MySet.UserCooldownDeleteLevel, MySet.CooldownDeleteLevel)
             return
-        elif data.GetParam(0).lower() == MySet.command_refresh_overlay.lower():
+        elif command == MySet.command_refresh_overlay.lower():
             RefreshOverlay(data)
-            AddCooldown(data.GetParam(0).lower(), data.User, MySet.UserCooldownRefreshOverlay, MySet.CooldownRefreshOverlay)
+            AddCooldown(command, data.User, MySet.UserCooldownRefreshOverlay, MySet.CooldownRefreshOverlay)
             return
 
 
