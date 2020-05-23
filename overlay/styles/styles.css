@@ -208,8 +208,8 @@ body {
           transform: translateY(-7.5%);
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
-  -webkit-animation-name: inline-ufp5uxh;
-          animation-name: inline-ufp5uxh;
+  -webkit-animation-name: inline-uynvnz5;
+          animation-name: inline-uynvnz5;
   -webkit-animation-duration: 1s;
           animation-duration: 1s;
   -webkit-animation-timing-function: ease;
@@ -217,7 +217,7 @@ body {
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
 }
-@-webkit-keyframes inline-ufp5uxh {
+@-webkit-keyframes inline-uynvnz5 {
   from {
     -webkit-transform: scale(1);
             transform: scale(1);
@@ -231,7 +231,7 @@ body {
             transform: scale(1);
   }
 }
-@keyframes inline-ufp5uxh {
+@keyframes inline-uynvnz5 {
   from {
     -webkit-transform: scale(1);
             transform: scale(1);
@@ -506,12 +506,12 @@ body {
           backface-visibility: hidden;
 }
 .main-wrapper .overlay-container .prompt-container .prompt .message p {
-  float: left;
+  display: inline-block;
   margin: 0;
   white-space: nowrap;
 }
 .main-wrapper .overlay-container .prompt-container .prompt .message p + p {
-  margin-left: 2em;
+  margin-left: 6em;
 }
 .main-wrapper .overlay-container .prompt-container .prompt.visible {
   -webkit-transform: translateY(100%);
@@ -524,8 +524,8 @@ body {
             transform: translateX(100%);
   }
   to {
-    -webkit-transform: translateX(-100%);
-            transform: translateX(-100%);
+    -webkit-transform: translateX(-200%);
+            transform: translateX(-200%);
   }
 }
 
@@ -535,8 +535,8 @@ body {
             transform: translateX(100%);
   }
   to {
-    -webkit-transform: translateX(-100%);
-            transform: translateX(-100%);
+    -webkit-transform: translateX(-200%);
+            transform: translateX(-200%);
   }
 }
 .prompt-marquee {
@@ -544,8 +544,8 @@ body {
           animation-fill-mode: forwards;
   -webkit-animation-name: prompt-marquee;
           animation-name: prompt-marquee;
-  -webkit-animation-duration: 20s;
-          animation-duration: 20s;
+  -webkit-animation-duration: 25s;
+          animation-duration: 25s;
   -webkit-animation-timing-function: linear;
           animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;

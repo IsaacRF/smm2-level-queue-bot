@@ -399,12 +399,12 @@ body {
                     backface-visibility: hidden;
 
                     p {
-                        float: left;
+                        display: inline-block;
                         margin: 0;
                         white-space: nowrap;
 
                         & + p {
-                            margin-left: 2em;
+                            margin-left: 6em;
                         }
                     }
                 }
@@ -420,7 +420,7 @@ body {
 
 // --- Animations --- //
 
-@include animation(prompt-marquee, 20s, (
+@include animation(prompt-marquee, 25s, (
     animation-timing-function: linear,
     animation-iteration-count: infinite,
     visibility: visible !important
@@ -429,7 +429,7 @@ body {
         transform: translateX(100%);
     }
     to {
-        transform: translateX(-100%);
+        transform: translateX(-200%);
     }
 }
 

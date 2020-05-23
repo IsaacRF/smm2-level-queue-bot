@@ -2,7 +2,9 @@
 #  SMM2 Level Queue System  #
 #############################
 Authors:         IsaacRF239 & Gabriel Rodríguez
-Twitch Channel:  https://www.twitch.tv/clickandslash
+License:         GNU General Public License v3.0
+Project URL:     https://github.com/IsaacRF/smm2lqs
+Twitch Channel:  https://twitch.tv/clickandslash
 Isaac Website:   https://isaacrf.com
 Gabriel Website: https://twitter.com/gabri239
 
@@ -11,6 +13,25 @@ SMM2 Level Queue System is a Streamlabs bot / script that allows viewers to queu
 
 [Español]
 SMM2 Level Queue System es un bot / script de Streamlabs que permite a los usuarios añadir sus niveles a una cola, mientras que ofrece todo tipo de comandos para permitir que los moderadores hagan un refresh del overlay o salten al siguiente nivel de la cola; y a los viewers ver su turno en la cola, listar niveles, etc. SMM2LQS incluye un overlay animado compatible con cualquier software de stream, como OBS, Streamlabs OBS y XSplit, para visualizar en pantalla el nivel actual y el siguiente.
+
+###################################
+#     License and conditions      #
+###################################
+[English]
+This project uses a GNU General Public License v3.0. This means that:
+1.- You can freely use, copy, modify and redistribute this software, as long as it remains open source.
+2.- You must keep original copyright information and notices. Removing them is not permitted.
+3.- If you modify and / o redistribute this code, you must use the same license (GNU General Public License v3.0).
+
+For more information on licensing and usage conditions, check the LICENSE file.
+
+[Español]
+Este proyecto utiliza una licencia GNU General Public License v3.0. Esto significa que:
+1.- Puedes utilizar, copiar, modificar y redistribuir libremente este software, siempre y cuando lo mantengas de código abierto.
+2.- Debes mantener la información y avisos de copyright originales. Eliminarlos no está permitido.
+3.- Si modificas y/o redistribuyes este código, debes utilizar la misma licencia (GNU General Public License v3.0).
+
+Para más información sobre la licencia y las condiciones de uso, echa un vistazo al archivo LICENSE.
 
 #####################
 #     Versions      #

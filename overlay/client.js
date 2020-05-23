@@ -1,5 +1,4 @@
-/*! SMM2 Level Queue System v1.1.0
-    (c) Isaac Rodríguez & Gabriel Rodríguez
+/*! SMM2 Level Queue System v1.1.0 | https://github.com/IsaacRF/smm2lqs | (c) IsaacRF239 & Gabriel Rodríguez | License GNU GPLv3
     Isaac Rodríguez Fernández | https://isaacrf.com
     Gabriel Rodríguez Fernández | https://twitter.com/Gabri239
 */
@@ -24,7 +23,7 @@ $(function() {
             // Format your Authentication Information
             var auth = {
                 author: "IsaacRF239 & Gabriel Rodríguez",
-                website: "https://twitch.tv/clickandslash",
+                website: "https://github.com/IsaacRF/smm2lqs",
                 api_key: API_Key,
                 events: [
                     "EVENT_SMM2QS_LEVEL_UPDATE",
@@ -245,8 +244,8 @@ $(function() {
             },
             settings: {
                 enabled: true,
-                frequency: 60,  // Show every X seconds
-                duration: 20    // Show for X seconds (ideally, same as the marquee animation duration)
+                frequency: 5,  // Show every X seconds
+                duration: 25     // Show for X seconds (ideally, same as the marquee animation duration)
             }
         }
     };
