@@ -1,18 +1,18 @@
 #############################
-#  SMM2 Level Queue System  #
+#  SMM2 Level Queue Bot  #
 #############################
 Authors:         IsaacRF239 & Gabriel Rodríguez
 License:         GNU General Public License v3.0
-Project URL:     https://github.com/IsaacRF/smm2lqs
-Twitch Channel:  https://twitch.tv/clickandslash
+Project URL:     https://github.com/IsaacRF/smm2-level-queue-bot
+Twitch Channel:  https://twitch.tv/hirokurai
 Isaac Website:   https://isaacrf.com
 Gabriel Website: https://twitter.com/gabri239
 
 [English]
-SMM2 Level Queue System is a Streamlabs bot / script that allows viewers to queue Super Mario Maker 2 levels, while offering all sort of commands to allow mods to refresh overlay or jump to next level in queue; and viewers to see their turn in queue, list levels, etc. SMM2LQS includes an animated overlay compatible with all main stream software such as OBS, Streamlabs OBS and XSplit to visualize the current and next level in queue.
+SMM2 Level Queue Bot is a Streamlabs bot / script that allows viewers to queue Super Mario Maker 2 levels, while offering all sort of commands to allow mods to refresh overlay or jump to next level in queue; and viewers to see their turn in queue, list levels, etc. SMM2LQS includes an animated overlay compatible with all main stream software such as OBS, Streamlabs OBS and XSplit to visualize the current and next level in queue.
 
 [Español]
-SMM2 Level Queue System es un bot / script de Streamlabs que permite a los usuarios añadir sus niveles a una cola, mientras que ofrece todo tipo de comandos para permitir que los moderadores hagan un refresh del overlay o salten al siguiente nivel de la cola; y a los viewers ver su turno en la cola, listar niveles, etc. SMM2LQS incluye un overlay animado compatible con cualquier software de stream, como OBS, Streamlabs OBS y XSplit, para visualizar en pantalla el nivel actual y el siguiente.
+SMM2 Level Queue Bot es un bot / script de Streamlabs que permite a los usuarios añadir sus niveles a una cola, mientras que ofrece todo tipo de comandos para permitir que los moderadores hagan un refresh del overlay o salten al siguiente nivel de la cola; y a los viewers ver su turno en la cola, listar niveles, etc. SMM2LQS incluye un overlay animado compatible con cualquier software de stream, como OBS, Streamlabs OBS y XSplit, para visualizar en pantalla el nivel actual y el siguiente.
 
 ###################################
 #     License and conditions      #
@@ -32,12 +32,6 @@ Este proyecto utiliza una licencia GNU General Public License v3.0. Esto signifi
 3.- Si modificas y/o redistribuyes este código, debes utilizar la misma licencia (GNU General Public License v3.0).
 
 Para más información sobre la licencia y las condiciones de uso, echa un vistazo al archivo LICENSE.
-
-#####################
-#     Versions      #
-#####################
-1.1.0 - Adds a levels overlay and adds responses to configuration
-1.0.0 - Initial Release
 
 #####################
 #    Installation   #
@@ -98,3 +92,9 @@ NOTE 2: Advanced permission commands can only be executed by Caster or Mods by d
 !deletelevel : Jump to the next level in queue, but lets the counters unaltered
 
 !refreshlevels : Forces the overlay to refresh its data
+
+#####################
+#     Changelog     #
+#####################
+1.1.0 - Adds a levels overlay and adds responses to configuration
+1.0.0 - Initial Release

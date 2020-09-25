@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # pylint: disable=invalid-name
-"""SMM2 Level Queue System"""
+"""SMM2 Level Queue Bot"""
 
 # ---------------------------------------
 # Libraries and references
@@ -16,14 +16,14 @@ import ctypes
 # ---------------------------------------
 # [Required] Script information
 # ---------------------------------------
-ScriptName = "SMM2 Level Queue System"
-Website = "https://github.com/IsaacRF/smm2lqs"
+ScriptName = "SMM2 Level Queue Bot"
+Website = "https://github.com/IsaacRF/smm2-level-queue-bot"
 Creator = "IsaacRF239 & Gabriel Rodríguez"
-TwitchChannelUrl = "https://twitch.tv/clickandslash"
+TwitchChannelUrl = "https://twitch.tv/hirokurai"
 Author1Website = "https://isaacrf.com"
 Author2Website = "https://twitter.com/gabri239"
 Version = "1.1.0"
-Description = "Super Mario Maker 2 Level Queue System"
+Description = "Super Mario Maker 2 Level Queue Bot"
 
 # ---------------------------------------
 # Versions
@@ -45,7 +45,7 @@ eventLevelUpdate = "EVENT_SMM2QS_LEVEL_UPDATE"
 levelCodePattern = re.compile("([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})(-| )([A-HJ-NP-Za-hj-np-z0-9]{3})$")
 twitchLineBreak = "_______________________________________  "
 twitchLineHeader = "---------------- Cola de niveles -------------------"
-copyrightLine = "SMM2 Level Queue System developed by " + Creator + ". " + Website
+copyrightLine = "SMM2 Level Queue Bot developed by " + Creator + ". " + Website
 wins = 0
 skips = 0
 

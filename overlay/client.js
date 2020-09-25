@@ -1,4 +1,4 @@
-/*! SMM2 Level Queue System v1.1.0 | https://github.com/IsaacRF/smm2lqs | (c) IsaacRF239 & Gabriel Rodríguez | License GNU GPLv3
+/*! SMM2 Level Queue Bot v1.1.0 | https://github.com/IsaacRF/smm2lqs | (c) IsaacRF239 & Gabriel Rodríguez | License GNU GPLv3
     Isaac Rodríguez Fernández | https://isaacrf.com
     Gabriel Rodríguez Fernández | https://twitter.com/Gabri239
 */
@@ -23,7 +23,7 @@ $(function() {
             // Format your Authentication Information
             var auth = {
                 author: "IsaacRF239 & Gabriel Rodríguez",
-                website: "https://github.com/IsaacRF/smm2lqs",
+                website: "https://github.com/IsaacRF/smm2-level-queue-bot",
                 api_key: API_Key,
                 events: [
                     "EVENT_SMM2QS_LEVEL_UPDATE",

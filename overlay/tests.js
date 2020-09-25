@@ -1,4 +1,4 @@
-var testUsers = ['clickandslash', 'ggpalma', 'sirteclas', 'tomatefey', 'zeroretr0', 'steyb'];
+var testUsers = ['hirokurai', 'ggpalma', 'sirteclas', 'tomatefey', 'zeroretr0', 'steyb'];
 var testWins = 0;
 var testSkips = 0;
 var testLevels = [];

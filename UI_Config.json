@@ -18,7 +18,7 @@
     "type": "textbox",
     "value": "!smm2lqs",
   	"label": "Command Name (Info)",
-    "tooltip": "Command to get info about SMM2 Level Queue System",
+    "tooltip": "Command to get info about SMM2 Level Queue Bot",
   	"group": "General"
   },
     "command_add": {
@@ -541,7 +541,7 @@
     "OpenHiroTwitchChannel": {
     "type": "button",
     "label": "Visit Hiro Twitch Channel",
-    "tooltip": "Visit Hiro Twitch Channel, one of the creators of SMM2 Level Queue System",
+    "tooltip": "Visit Hiro Twitch Channel, one of the creators of SMM2 Level Queue Bot",
     "function": "openCreatorTwitchChannel",
     "wsevent": "",
     "group": ""
@@ -549,7 +549,7 @@
     "OpenIsaacWebsite": {
     "type": "button",
     "label": "Visit Isaac Website",
-    "tooltip": "Visit Isaac Website, a.k.a. Hiro, one of the creators of SMM2 Level Queue System",
+    "tooltip": "Visit Isaac Website, a.k.a. Hiro, one of the creators of SMM2 Level Queue Bot",
     "function": "openAuthor1Website",
     "wsevent": "",
     "group": ""
@@ -557,7 +557,7 @@
     "OpenGabrielWebsite": {
     "type": "button",
     "label": "Visit Gabriel Website",
-    "tooltip": "Visit Gabriel Rodríguez Website, one of the creators of SMM2 Level Queue System",
+    "tooltip": "Visit Gabriel Rodríguez Website, one of the creators of SMM2 Level Queue Bot",
     "function": "openAuthor2Website",
     "wsevent": "",
     "group": ""
