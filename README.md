@@ -1,14 +1,15 @@
 # SMM2 Level Queue Bot
+<p align="center">
+  <img src="https://github.com/IsaacRF/smm2-level-queue-bot/blob/master/SMM2LQS_icon.png" width="50%" style="display: block; margin: 0 auto; text-align: center">
+</p>
+
+## About
 - Authors:         IsaacRF239 & Gabriel Rodríguez
 - License:         GNU General Public License v3.0
 - Project URL:     https://github.com/IsaacRF/smm2-level-queue-bot
 - Twitch Channel:  https://twitch.tv/hirokurai
 - Isaac Website:   https://isaacrf.com
 - Gabriel Website: https://twitter.com/gabri239
-
-<p align="center">
-  <img src="https://github.com/IsaacRF/smm2-level-queue-bot/blob/master/SMM2LQS_icon.png" width="50%" style="display: block; margin: 0 auto; text-align: center">
-</p>
 
 ### [English]
 SMM2 Level Queue Bot is a Streamlabs bot / script that allows viewers to queue Super Mario Maker 2 levels, while offering all sort of commands to allow mods to refresh overlay or jump to next level in queue; and viewers to see their turn in queue, list levels, etc. SMM2LQS includes an animated overlay compatible with all main stream software such as OBS, Streamlabs OBS and XSplit to visualize the current and next level in queue.
