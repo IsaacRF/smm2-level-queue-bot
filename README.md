@@ -3,10 +3,13 @@
   <img src="https://github.com/IsaacRF/smm2-level-queue-bot/blob/master/SMM2LQS_icon.png" width="50%" style="display: block; margin: 0 auto; text-align: center">
 </p>
 
+## Quick Links
+- [👉 Setup](https://github.com/IsaacRF/smm2-level-queue-bot#setup)
+- [👉 Commands](https://github.com/IsaacRF/smm2-level-queue-bot#commands)
+
 ## About
 - Authors:         IsaacRF239 & Gabriel Rodríguez
 - License:         GNU General Public License v3.0
-- Project URL:     https://github.com/IsaacRF/smm2-level-queue-bot
 - Twitch Channel:  https://twitch.tv/hirokurai
 - Isaac Website:   https://isaacrf.com
 - Gabriel Website: https://twitter.com/gabri239
@@ -63,7 +66,7 @@ Para más información sobre la licencia y las condiciones de uso, echa un vista
 ***NOTA**: Ten en cuenta que el overlay se carga vacío inicialmente aunque haya niveles en cola. Se actualizará automáticamente al utilizar los comandos de win, skip o delete level, pero también puedes forzar el refresh del overlay con el comando !refreshlevels*
 6.- El bot está listo para usar
 
-## Usage
+## Commands
 ***NOTE**: In this section, commands are referenced by their default name. You can change them in the configuration*
 
 ***NOTE 2**: Advanced permission commands can only be executed by Caster or Mods by default. This can be changed in the "Permissions" section of the configuration.*
@@ -83,6 +86,13 @@ Para más información sobre la licencia y las condiciones de uso, echa un vista
 - **!skiplevel** : Jump to the next level in queue. Adds a Skip to the skips counter
 - **!deletelevel** : Jump to the next level in queue, but lets the counters unaltered
 - **!refreshlevels** : Forces the overlay to refresh its data
+
+## Technologies
+- Python
+- HTML5
+- CSS
+- SASS
+- Javascript
 
 ## Changelog
 ### 1.1.0 
