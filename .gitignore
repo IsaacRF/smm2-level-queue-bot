@@ -118,10 +118,14 @@ dmypy.json
 # Ignore all local history of files
 .history
 
+### Streamlabs and bot files
 #Ignore levels file
 levels.txt
 
 #Ignore API KEY file
 API_Key.js
+
+#Ignore settings files
+settings.*
 
 # End of https://www.gitignore.io/api/python,visualstudiocode
