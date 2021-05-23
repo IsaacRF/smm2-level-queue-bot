@@ -21,7 +21,7 @@ Website = "https://github.com/IsaacRF/smm2-level-queue-bot"
 Creator = "IsaacRF239 & Gabriel Rodríguez"
 TwitchChannelUrl = "https://twitch.tv/hirokurai"
 Author1Website = "https://isaacrf.com"
-Author2Website = "https://twitter.com/gabri239"
+Author2Website = "https://www.gabrielrf.dev/"
 Version = "1.1.0"
 Description = "Super Mario Maker 2 Level Queue Bot"
 

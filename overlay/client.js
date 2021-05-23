@@ -1,6 +1,6 @@
 /*! SMM2 Level Queue Bot v1.1.0 | https://github.com/IsaacRF/smm2lqs | (c) IsaacRF239 & Gabriel Rodríguez | License GNU GPLv3
     Isaac Rodríguez Fernández | https://isaacrf.com
-    Gabriel Rodríguez Fernández | https://twitter.com/Gabri239
+    Gabriel Rodríguez Fernández | https://www.gabrielrf.dev/
 */
 
 $(function() {

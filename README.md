@@ -12,7 +12,7 @@
 - License:         GNU General Public License v3.0
 - Twitch Channel:  https://twitch.tv/hirokurai
 - Isaac Website:   https://isaacrf.com
-- Gabriel Website: https://twitter.com/gabri239
+- Gabriel Website: https://www.gabrielrf.dev/
 
 ### [English]
 SMM2 Level Queue Bot is a Streamlabs bot / script that allows viewers to queue Super Mario Maker 2 levels, see their turn in the queue, list levels, etc., while offering all sorts of commands for mods to refresh the overlay or jump to the next level in the queue. SMM2LQS includes an animated overlay, compatible with all main streaming software such as OBS, Streamlabs OBS and XSplit to visualize the current and next level in queue.
